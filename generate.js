@@ -43,6 +43,10 @@ const getStoresAndAvailability = () =>
 		);
 
 		await browser.close();
+
+		setTimeout(() => {
+			if (!finished) reject(null);
+		}, 1000 * 30);
 	});
 
 (async () => {
