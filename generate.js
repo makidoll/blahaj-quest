@@ -8,8 +8,13 @@ const getStoresAndAvailability = () =>
 		const page = await browser.newPage();
 
 		let finished = false;
+
 		let stores = null;
 		let availability = null;
+
+		const timeout = setTimeout(() => {
+			if (!finished) reject(null);
+		}, 1000 * 30);
 
 		const tryFinish = () => {
 			if (stores != null && availability != null) {
@@ -18,6 +23,7 @@ const getStoresAndAvailability = () =>
 					stores: JSON.parse(stores),
 					availability: JSON.parse(availability),
 				});
+				clearTimeout(timeout);
 			}
 		};
 
@@ -43,10 +49,6 @@ const getStoresAndAvailability = () =>
 		);
 
 		await browser.close();
-
-		setTimeout(() => {
-			if (!finished) reject(null);
-		}, 1000 * 30);
 	});
 
 (async () => {
