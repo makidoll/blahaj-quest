@@ -1,5 +1,8 @@
 {
 	"private": true,
+	"scripts": {
+		"build": "node generate.js"
+	},
 	"dependencies": {
 		"fs-extra": "^10.1.0",
 		"puppeteer": "^13.6.0"

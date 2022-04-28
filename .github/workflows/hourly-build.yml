@@ -1,0 +1,26 @@
+name: Hourly build
+on:
+    schedule:
+        - cron: "0 * * * *"
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v1
+
+            - uses: actions/cache@v2
+              with:
+                  path: "**/node_modules"
+                  key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+            - name: Install packages
+              run: yarn install
+
+            - name: Build
+              run: yarn build
+
+            - name: Deploy 🚀
+              uses: JamesIves/github-pages-deploy-action@v4.3.3
+              with:
+                  branch: gh-pages
+                  folder: public
