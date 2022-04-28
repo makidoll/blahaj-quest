@@ -1,0 +1,170 @@
+<html>
+	<head>
+		<title>BLÅHAJ finder</title>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="32x32"
+			href="favicon-32x32.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="16x16"
+			href="favicon-16x16.png"
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap"
+			rel="stylesheet"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+			integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+			crossorigin=""
+		/>
+		<script
+			src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+			integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+			crossorigin=""
+		></script>
+		<script src="https://unpkg.com/heatmap.js@2.0.5/build/heatmap.js"></script>
+		<script src="leaflet-heatmap.js"></script>
+		<script async defer src="https://buttons.github.io/buttons.js"></script>
+		<style>
+			* {
+				margin: 0;
+			}
+
+			body {
+				overflow: hidden;
+				font-family: "Noto Sans", sans-serif;
+			}
+
+			#map {
+				width: 100vw;
+				height: calc(100vh - 48px);
+			}
+
+			.header {
+				width: 100vw;
+				height: 48px;
+				display: flex;
+				align-items: center;
+				justify-content: flex-start;
+				flex-direction: row;
+				color: #fff;
+				background-image: linear-gradient(
+						0deg,
+						rgba(29, 31, 33, 0.3),
+						rgba(29, 31, 33, 0.3)
+					),
+					linear-gradient(0deg, #468293, #468293);
+			}
+
+			.icon {
+				width: 128px;
+				height: 48px;
+				background-image: url("img/full-flipped.png");
+				background-size: cover;
+				background-position: 50% 60%;
+			}
+
+			.title {
+				font-size: 1.6rem;
+				margin-left: 16px;
+				margin-top: -4px;
+			}
+
+			.title a {
+				text-decoration: none;
+				color: #fff;
+			}
+
+			.text {
+				margin-left: 16px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<div class="icon"></div>
+			<h1 class="title">
+				<a
+					href="https://www.ikea.com/us/en/p/blahaj-soft-toy-shark-90373590/"
+				>
+					BLÅHAJ finder
+				</a>
+			</h1>
+			<p class="text">
+				Last updated: <b id="updated">loading...</b>
+				<span style="opacity: 0.6">(updates hourly)</span>
+			</p>
+			<div style="flex-grow: 1"></div>
+			<span style="margin-right: 8px">
+				<a
+					class="github-button"
+					href="https://github.com/makitsune/blahaj-finder"
+					data-color-scheme="no-preference: light; light: light; dark: dark;"
+					data-size="large"
+					data-show-count="true"
+					aria-label="Star makitsune/blahaj-finder on GitHub"
+				>
+					Star
+				</a>
+			</span>
+		</div>
+		<div id="map"></div>
+		<script>
+			const map = L.map("map").setView(
+				[37.56199695314352, -97.07519531250001],
+				5,
+			);
+
+			L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+				attribution:
+					'&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>',
+				maxZoom: 19,
+			}).addTo(map);
+
+			(async () => {
+				const res = await fetch("blahaj.json?" + Date.now());
+				const blahajData = await res.json();
+
+				const updated = new Date(blahajData.updated);
+				document.getElementById("updated").textContent =
+					updated.toLocaleString();
+
+				// for some strange reason, the lat/lng doesnt match with ikea's api
+				// numbers below are just manually aligning
+				// for (const store of blahajData.data) {
+				// 	store.lat += 0.7855;
+				// 	store.lng -= 0.47164;
+				// }
+				// aah i dont know
+
+				const heatmapLayer = new HeatmapOverlay({
+					radius: 1.5,
+					maxOpacity: 0.7,
+					scaleRadius: true,
+					useLocalExtrema: true,
+					latField: "lat",
+					lngField: "lng",
+					valueField: "quantity",
+				});
+				heatmapLayer.setData({ data: blahajData.data });
+				heatmapLayer.addTo(map);
+
+				for (let store of blahajData.data) {
+					L.marker([store.lat, store.lng])
+						.bindPopup(
+							store.name + ": " + store.quantity + " blahaj",
+						)
+						.addTo(map);
+				}
+			})();
+		</script>
+	</body>
+</html>
