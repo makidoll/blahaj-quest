@@ -18,26 +18,20 @@
 		<!-- <meta name="msapplication-config" content="/assets/icons/browserconfig.xml"> -->
 		<meta name="theme-color" content="#468293" />
 		<meta name="description" content="Hourly BLÅHAJ finder map" />
-		<meta
-			property="og:url"
-			content="https://makitsune.github.io/blahaj-finder/"
-		/>
+		<meta property="og:url" content="https://blahaj.quest/" />
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content="BLÅHAJ finder 🦈" />
 		<meta property="og:description" content="Hourly BLÅHAJ finder map" />
 		<meta
 			property="og:image"
-			content="https://makitsune.github.io/blahaj-finder/img/full-flipped.png"
+			content="https://blahaj.quest/img/full-flipped.png"
 		/>
-		<meta
-			property="twitter:url"
-			content="https://makitsune.github.io/blahaj-finder/"
-		/>
+		<meta property="twitter:url" content="https://blahaj.quest/" />
 		<meta name="twitter:title" content="BLÅHAJ finder 🦈" />
 		<meta name="twitter:description" content="Hourly BLÅHAJ finder map" />
 		<meta
 			name="twitter:image"
-			content="https://makitsune.github.io/blahaj-finder/img/full-flipped.png"
+			content="https://blahaj.quest/img/full-flipped.png"
 		/>
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -157,10 +151,7 @@
 		</div>
 		<div id="map"></div>
 		<script>
-			const map = L.map("map").setView(
-				[39.842286020743394, -37.26562500000001],
-				3,
-			);
+			const map = L.map("map").setView([20, 0], 3);
 
 			L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 				attribution:
