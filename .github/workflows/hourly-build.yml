@@ -26,3 +26,4 @@ jobs:
               with:
                   personal_token: ${{ secrets.PERSONAL_TOKEN }}
                   publish_dir: ./public
+                  cname: blahaj.quest
