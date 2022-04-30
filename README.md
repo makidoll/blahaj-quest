@@ -2,7 +2,7 @@
 
 Hourly BLÅHAJ finder map
 
-https://makitsune.github.io/blahaj-finder
+https://blahaj.quest
 
 ```
 yarn
