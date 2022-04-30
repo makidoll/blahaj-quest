@@ -2,10 +2,10 @@ const fs = require("fs-extra");
 const path = require("path");
 const axios = require("axios");
 
-async function getStock(countryCode, itemCode) {
+async function getStock(countryCode, languageCode, itemCode) {
 	try {
 		const stores = await axios({
-			url: `https://www.ikea.com/${countryCode}/en/meta-data/navigation/stores-detailed.json`,
+			url: `https://www.ikea.com/${countryCode}/${languageCode}/meta-data/navigation/stores-detailed.json`,
 		});
 
 		const stock = await axios({
@@ -41,17 +41,26 @@ async function getStock(countryCode, itemCode) {
 			})
 			.filter(store => store != null);
 	} catch (error) {
+		console.error(countryCode + "-" + languageCode + " failed");
 		return [];
 	}
 }
 
 (async () => {
 	const blahajData = [
-		...(await getStock("us", "90373590")),
-		...(await getStock("ca", "90373590")),
-		...(await getStock("mx", "90373590")),
-		...(await getStock("es", "30373588")),
-		...(await getStock("gb", "30373588")),
+		// north america
+		...(await getStock("us", "en", "90373590")),
+		...(await getStock("ca", "en", "90373590")),
+		// south america
+		...(await getStock("mx", "es", "90373590")),
+		// europe
+		...(await getStock("es", "es", "30373588")),
+		...(await getStock("gb", "en", "30373588")),
+		...(await getStock("fr", "fr", "30373588")),
+		...(await getStock("be", "nl", "30373588")),
+		...(await getStock("nl", "nl", "30373588")),
+		...(await getStock("de", "de", "30373588")),
+		...(await getStock("it", "it", "30373588")),
 	];
 
 	const publicPath = path.resolve(__dirname, "public");
