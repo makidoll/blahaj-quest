@@ -69,6 +69,14 @@
 				font-family: "Noto Sans", sans-serif;
 			}
 
+			.leaflet-container {
+				font-family: "Noto Sans", sans-serif;
+			}
+
+			.leaflet-popup-content-wrapper {
+				border-radius: 999px;
+			}
+
 			#map {
 				width: 100vw;
 				height: calc(100vh - 48px);
@@ -180,10 +188,26 @@
 				heatmapLayer.setData({ data: blahajData.data });
 				heatmapLayer.addTo(map);
 
+				const iconSize = 48;
+				const icons = ["img/full.png", "img/full-flipped.png"].map(
+					url =>
+						L.icon({
+							iconUrl: url,
+							iconSize: [iconSize, iconSize],
+							iconAnchor: [iconSize / 2, iconSize / 2],
+							popupAnchor: [0, -iconSize / 3],
+						}),
+				);
+
 				for (let store of blahajData.data) {
-					L.marker([store.lat, store.lng])
+					L.marker([store.lat, store.lng], {
+						icon: icons[Math.floor(Math.random() * icons.length)],
+					})
 						.bindPopup(
-							store.name + ": " + store.quantity + " blahaj",
+							store.name +
+								": <b>" +
+								store.quantity +
+								" blahåj</b>",
 						)
 						.addTo(map);
 				}
