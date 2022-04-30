@@ -120,9 +120,12 @@
 					BLÅHAJ finder
 				</a>
 			</h1>
-			<p style="margin-left: 16px">
+			<p style="margin-left: 32px">
 				Last updated: <b id="updated">loading...</b>
 				<span style="opacity: 0.6">(updates hourly)</span>
+			</p>
+			<p style="margin-left: 32px">
+				<b><span id="total-stores"></span> stores</b> indexed
 			</p>
 			<div style="flex-grow: 1"></div>
 			<a
@@ -161,6 +164,9 @@
 				const updated = new Date(blahajData.updated);
 				document.getElementById("updated").textContent =
 					updated.toLocaleString();
+
+				document.getElementById("total-stores").textContent =
+					blahajData.data.length;
 
 				const heatmapLayer = new HeatmapOverlay({
 					radius: 1.5,
