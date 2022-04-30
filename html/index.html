@@ -146,10 +146,7 @@
 		</div>
 		<div id="map"></div>
 		<script>
-			const map = L.map("map").setView(
-				[37.56199695314352, -97.07519531250001],
-				5,
-			);
+			const map = L.map("map").setView([20, 0], 3);
 
 			L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 				attribution:
@@ -164,14 +161,6 @@
 				const updated = new Date(blahajData.updated);
 				document.getElementById("updated").textContent =
 					updated.toLocaleString();
-
-				// for some strange reason, the lat/lng doesnt match with ikea's api
-				// numbers below are just manually aligning
-				// for (const store of blahajData.data) {
-				// 	store.lat += 0.7855;
-				// 	store.lng -= 0.47164;
-				// }
-				// aah i dont know
 
 				const heatmapLayer = new HeatmapOverlay({
 					radius: 1.5,

@@ -1,79 +1,58 @@
-const puppeteer = require("puppeteer");
 const fs = require("fs-extra");
 const path = require("path");
+const axios = require("axios");
 
-const getStoresAndAvailability = () =>
-	new Promise(async (resolve, reject) => {
-		const browser = await puppeteer.launch();
-		const page = await browser.newPage();
-
-		let finished = false;
-
-		let stores = null;
-		let availability = null;
-
-		const timeout = setTimeout(() => {
-			if (!finished) reject(null);
-		}, 1000 * 30);
-
-		const tryFinish = () => {
-			if (stores != null && availability != null) {
-				finished = true;
-				resolve({
-					stores: JSON.parse(stores),
-					availability: JSON.parse(availability),
-				});
-				clearTimeout(timeout);
-			}
-		};
-
-		page.on("response", async res => {
-			if (finished) return;
-			const url = new URL(res.url());
-			if (url.pathname.endsWith("stores-detailed.json")) {
-				stores = (await res.buffer()).toString("utf8");
-				tryFinish();
-			} else if (url.pathname.includes("/availabilities/")) {
-				if (res.request().method() != "GET") return;
-				if (url.searchParams.get("zip") != null) return;
-				availability = (await res.buffer()).toString("utf8");
-				tryFinish();
-			}
+async function getStock(countryCode, itemCode) {
+	try {
+		const stores = await axios({
+			url: `https://www.ikea.com/${countryCode}/en/meta-data/navigation/stores-detailed.json`,
 		});
 
-		await page.goto(
-			"https://www.ikea.com/us/en/p/blahaj-soft-toy-shark-90373590/",
-			{
-				waitUntil: "networkidle2",
+		const stock = await axios({
+			url: `https://api.ingka.ikea.com/cia/availabilities/ru/${countryCode}`,
+			headers: {
+				Accept: "application/json;version=2",
+				Referer: "https://www.ikea.com/",
+				"X-Client-Id": "b6c117e5-ae61-4ef5-b4cc-e0b1e37f0631",
 			},
-		);
+			params: {
+				itemNos: itemCode,
+				// expand: "StoresList,Restocks,SalesLocations",
+				expand: "StoresList",
+			},
+		});
 
-		await browser.close();
-	});
+		return stock.data.availabilities
+			.map(storeAvail => {
+				const quantity =
+					storeAvail?.buyingOption?.cashCarry?.availability?.quantity;
+				if (quantity == null) return null;
+
+				const storeId = storeAvail?.classUnitKey?.classUnitCode;
+				const store = stores.data.find(store => store.id == storeId);
+				if (store == null) return null;
+
+				return {
+					quantity,
+					name: store.name,
+					lat: store.lat,
+					lng: store.lng,
+				};
+			})
+			.filter(store => store != null);
+	} catch (error) {
+		return [];
+	}
+}
 
 (async () => {
-	const { stores, availability } = await getStoresAndAvailability();
-
-	const blahajData = availability.availabilities
-		.map(item => {
-			const quantity =
-				item.buyingOption?.cashCarry?.availability?.quantity;
-			if (quantity == null) return null;
-
-			const storeId = parseInt(item.classUnitKey?.classUnitCode);
-			if (Number.isNaN(storeId)) return null;
-
-			const store = stores.find(store => store.id == storeId);
-			if (store == null) return null;
-
-			return {
-				quantity,
-				name: store.name,
-				lat: parseInt(store.lat),
-				lng: parseInt(store.lng),
-			};
-		})
-		.filter(store => store != null);
+	const blahajData = [
+		...(await getStock("us", "90373590")),
+		...(await getStock("ca", "90373590")),
+		...(await getStock("mx", "90373590")),
+		...(await getStock("es", "30373588")),
+		...(await getStock("gb", "30373588")),
+	];
 
 	const publicPath = path.resolve(__dirname, "public");
 
