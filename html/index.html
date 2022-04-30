@@ -151,9 +151,21 @@
 		</div>
 		<div id="map"></div>
 		<script>
+			const zoomHeatRadiusMap = {
+				0: 16,
+				1: 12,
+				2: 8,
+				3: 4,
+				4: 3,
+				5: 2,
+				6: 1,
+				default: 0.5, // 7 or higher
+			};
+
+			const defaultZoom = 3;
 			const map = L.map("map").setView(
 				[30.826780904779774, -30.937500000000004],
-				3,
+				defaultZoom,
 			);
 
 			L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -174,8 +186,8 @@
 					blahajData.data.length;
 
 				const heatmapLayer = new HeatmapOverlay({
-					radius: 1.5,
-					maxOpacity: 0.7,
+					radius: zoomHeatRadiusMap[defaultZoom],
+					maxOpacity: 0.6,
 					scaleRadius: true,
 					useLocalExtrema: true,
 					latField: "lat",
@@ -184,6 +196,17 @@
 				});
 				heatmapLayer.setData({ data: blahajData.data });
 				heatmapLayer.addTo(map);
+				window.heatmapLayer = heatmapLayer;
+
+				map.on("zoomend", e => {
+					const zoom = e.target.getZoom();
+					const radius =
+						zoomHeatRadiusMap[zoom] ?? zoomHeatRadiusMap["default"];
+
+					console.log(`zoom: ${zoom}, radius: ${radius}`);
+					heatmapLayer.cfg.radius = radius;
+					heatmapLayer._draw();
+				});
 
 				const iconSize = 48;
 				const iconSettings = {
