@@ -189,27 +189,37 @@
 				heatmapLayer.addTo(map);
 
 				const iconSize = 48;
-				const icons = ["img/full.png", "img/full-flipped.png"].map(
-					url =>
-						L.icon({
-							iconUrl: url,
-							iconSize: [iconSize, iconSize],
-							iconAnchor: [iconSize / 2, iconSize / 2],
-							popupAnchor: [0, -iconSize / 3],
-						}),
-				);
+				const iconSettings = {
+					// iconUrl: url,
+					iconSize: [iconSize, iconSize],
+					iconAnchor: [iconSize / 2, iconSize / 2],
+					popupAnchor: [0, -iconSize / 3],
+				};
+
+				const icons = {
+					opaque: [
+						"img/full-outline.png",
+						"img/full-outline-flipped.png",
+					].map(iconUrl => L.icon({ iconUrl, ...iconSettings })),
+					faded: [
+						"img/full-outline-faded.png",
+						"img/full-outline-flipped-faded.png",
+					].map(iconUrl => L.icon({ iconUrl, ...iconSettings })),
+				};
 
 				for (let store of blahajData.data) {
-					L.marker([store.lat, store.lng], {
-						icon: icons[Math.floor(Math.random() * icons.length)],
-					})
-						.bindPopup(
-							store.name +
-								": <b>" +
-								store.quantity +
-								" blahåj</b>",
-						)
-						.addTo(map);
+					const currentIcons =
+						store.quantity == 0 ? icons.faded : icons.opaque;
+
+					const marker = L.marker([store.lat, store.lng], {
+						icon: currentIcons[
+							Math.floor(Math.random() * currentIcons.length)
+						],
+					});
+					marker.bindPopup(
+						store.name + ": <b>" + store.quantity + " blahåj</b>",
+					);
+					marker.addTo(map);
 				}
 			})();
 		</script>
