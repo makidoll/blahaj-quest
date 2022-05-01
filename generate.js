@@ -105,30 +105,30 @@ async function getStock(countryCode, languageCode, itemCode) {
 		// afghanistan -
 		// armenia -
 		// azerbaijan -
-		...(await getStock("bh","ar","30373588")), // bahrain
+		...(await getStock("bh", "ar", "30373588")), // bahrain
 		// bangladesh -
 		// bhutan -
 		// brunei -
 		// burma/myanmar -
 		// cambodia -
-		...(await getStock("cn","zh","10373589")), // china, redirected to local site, but same api
+		...(await getStock("cn", "zh", "10373589")), // china, redirected to local site, but same api
 		// taiwan, regional site
 		// hongkong and macau, regional site
 		// cyprus, different api?
 		// georgia -
-		...(await getStock("in","en","10373589")), // india
+		...(await getStock("in", "en", "10373589")), // india
 		// indonesia, regional? site
 		// iran -
 		// iraq -
-		...(await getStock("il","he","30373588")), // israel
-		...(await getStock("jp","ja","10373589")), // japan
-		...(await getStock("jo","ar","30373588")), // jordan
+		...(await getStock("il", "he", "30373588")), // israel
+		...(await getStock("jp", "ja", "10373589")), // japan
+		...(await getStock("jo", "ar", "30373588")), // jordan
 		// kazakhstan -
-		...(await getStock("kw","ar","30373588")), // kuwait
+		...(await getStock("kw", "ar", "30373588")), // kuwait
 		// kyrgyzstan -
 		// laos -
 		// lebanon -
-		...(await getStock("my","ms","10373589")), // malaysia
+		...(await getStock("my", "ms", "10373589")), // malaysia
 		// maldives -
 		// mongolia -
 		// nepal -
@@ -136,37 +136,43 @@ async function getStock(countryCode, languageCode, itemCode) {
 		// oman 2022
 		// pakistan -
 		// palestine -
-		...(await getStock("ph","en","10373589")), // philippines
-		...(await getStock("qa","ar","30373588")), // qatar
-		...(await getStock("sa","ar","30373588")), // saudi arabia
-		...(await getStock("sg","en","10373589")), // singapore
-		...(await getStock("kr","ko","10373589")), // south korea
+		...(await getStock("ph", "en", "10373589")), // philippines
+		...(await getStock("qa", "ar", "30373588")), // qatar
+		...(await getStock("sa", "ar", "30373588")), // saudi arabia
+		...(await getStock("sg", "en", "10373589")), // singapore
+		...(await getStock("kr", "ko", "10373589")), // south korea
 		// sri lanka -
 		// syria -
 		// tajikstan -
-		...(await getStock("th","th","10373589")), // thailand
+		...(await getStock("th", "th", "10373589")), // thailand
 		// east timor -
 		// turkey, regional? site
 		// turkmenistan -
-		...(await getStock("ae","ar","30373588")), // united arab emirates 
+		...(await getStock("ae", "ar", "30373588")), // united arab emirates
 		// uzbekistan -
 		// vietnam 2025
 		// yemen -
-	]
+	];
 
 	const blahajAfricaData = [
-		...(await getStock("eg","ar","30373588")), // egypt
-		...(await getStock("ma","ar","30373588")), // morocco
+		...(await getStock("eg", "ar", "30373588")), // egypt
+		...(await getStock("ma", "ar", "30373588")), // morocco
 		// only 2 country as of 2022-05-01
-	]
+	];
 
 	const blahajOceaniaData = [
-		...(await getStock("au","en","10373589")), // australia
+		...(await getStock("au", "en", "10373589")), // australia
 		// new zealand, 2022
 		// only 1 country and 1 planned as of 2022-05-01
-	]
+	];
 
-	const blahajData = [...blahajAmericasData, ...blahajEuropeData, ...blahajAsiaData, ...blahajAfricaData, ...blahajOceaniaData];
+	const blahajData = [
+		...blahajAmericasData,
+		...blahajEuropeData,
+		...blahajAsiaData,
+		...blahajAfricaData,
+		...blahajOceaniaData,
+	];
 
 	const publicPath = path.resolve(__dirname, "public");
 
