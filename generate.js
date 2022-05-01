@@ -156,7 +156,7 @@ async function getStock(countryCode, languageCode, itemCode) {
 
 	const blahajAfricaData = [
 		...(await getStock("eg","ar","30373588")), // egypt
-		...(await getStock("eg","ar","30373588")), // morocco
+		...(await getStock("ma","ar","30373588")), // morocco
 		// only 2 country as of 2022-05-01
 	]
 
