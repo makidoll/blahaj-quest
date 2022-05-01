@@ -40,19 +40,6 @@
 			href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap"
 			rel="stylesheet"
 		/>
-		<link
-			rel="stylesheet"
-			href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
-			integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
-			crossorigin=""
-		/>
-		<script
-			src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
-			integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
-			crossorigin=""
-		></script>
-		<script src="https://unpkg.com/heatmap.js@2.0.5/build/heatmap.js"></script>
-		<script src="leaflet-heatmap.js"></script>
 		<script async defer src="https://buttons.github.io/buttons.js"></script>
 		<style>
 			* {
@@ -124,7 +111,7 @@
 				</a>
 			</h1>
 			<p style="margin-left: 32px">
-				Last updated: <b id="updated"></b>
+				Last updated: <b id="updated">loading...</b>
 				<span style="opacity: 0.6">(updates hourly)</span>
 			</p>
 			<p style="margin-left: 32px">
@@ -154,100 +141,105 @@
 			</span>
 		</div>
 		<div id="map"></div>
+		<script
+			async
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDxaXu4XNLCqQNuA1pAiJRvPA5Ys4CnB60&libraries=visualization&callback=initMap"
+		></script>
 		<script>
-			const zoomHeatRadiusMap = {
-				0: 16,
-				1: 12,
-				2: 8,
-				3: 4,
-				4: 3,
-				5: 2,
-				6: 1,
-				default: 0.5, // 7 or higher
-			};
+			function initMap() {
+				// {
+				// 		location: new google.maps.LatLng(37.782, -122.447),
+				// 		weight: 0.5,
+				// 	},
 
-			const defaultZoom = 2;
-			const map = L.map("map").setView([20, 0], defaultZoom);
+				const map = new google.maps.Map(
+					document.getElementById("map"),
+					{
+						center: new google.maps.LatLng(20, 0),
+						zoom: 2,
+					},
+				);
 
-			L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-				attribution:
-					'&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>',
-				maxZoom: 19,
-			}).addTo(map);
+				(async () => {
+					const res = await fetch("blahaj.json?" + Date.now());
+					const blahajData = await res.json();
 
-			(async () => {
-				const res = await fetch("blahaj.json?" + Date.now());
-				const blahajData = await res.json();
+					const updated = new Date(blahajData.updated);
+					document.getElementById("updated").textContent =
+						updated.toLocaleString();
 
-				const updated = new Date(blahajData.updated);
-				document.getElementById("updated").textContent =
-					updated.toLocaleString();
+					document.getElementById("total-stores").textContent =
+						blahajData.data.length.toLocaleString("en-US");
 
-				document.getElementById("total-stores").textContent =
-					blahajData.data.length.toLocaleString("en-US");
+					document.getElementById("total-blahaj").textContent =
+						blahajData.data
+							.reduce((a, b) => a + b.quantity, 0)
+							.toLocaleString("en-US");
 
-				document.getElementById("total-blahaj").textContent =
-					blahajData.data
-						.reduce((a, b) => a + b.quantity, 0)
-						.toLocaleString("en-US");
-
-				const heatmapLayer = new HeatmapOverlay({
-					radius: zoomHeatRadiusMap[defaultZoom],
-					maxOpacity: 0.6,
-					scaleRadius: true,
-					useLocalExtrema: true,
-					latField: "lat",
-					lngField: "lng",
-					valueField: "quantity",
-				});
-				heatmapLayer.setData({ data: blahajData.data });
-				heatmapLayer.addTo(map);
-				window.heatmapLayer = heatmapLayer;
-
-				map.on("zoomend", e => {
-					const zoom = e.target.getZoom();
-					const radius =
-						zoomHeatRadiusMap[zoom] ?? zoomHeatRadiusMap["default"];
-
-					console.log(`zoom: ${zoom}, radius: ${radius}`);
-					heatmapLayer.cfg.radius = radius;
-					heatmapLayer._draw();
-				});
-
-				const iconSize = 48;
-				const iconSettings = {
-					// iconUrl: url,
-					iconSize: [iconSize, iconSize],
-					iconAnchor: [iconSize / 2, iconSize / 2],
-					popupAnchor: [0, -iconSize / 3],
-				};
-
-				const icons = {
-					opaque: [
-						"img/marker-icons/48/marker1.png",
-						"img/marker-icons/48/marker2.png",
-					].map(iconUrl => L.icon({ iconUrl, ...iconSettings })),
-					faded: [
-						"img/marker-icons/48/marker1-faded.png",
-						"img/marker-icons/48/marker2-faded.png",
-					].map(iconUrl => L.icon({ iconUrl, ...iconSettings })),
-				};
-
-				for (let store of blahajData.data) {
-					const currentIcons =
-						store.quantity == 0 ? icons.faded : icons.opaque;
-
-					const marker = L.marker([store.lat, store.lng], {
-						icon: currentIcons[
-							Math.floor(Math.random() * currentIcons.length)
-						],
+					const heatmap = new google.maps.visualization.HeatmapLayer({
+						dissipating: false,
+						data: blahajData.data.map(store => ({
+							location: new google.maps.LatLng(
+								store.lat,
+								store.lng,
+							),
+							weight: store.quantity,
+						})),
 					});
-					marker.bindPopup(
-						store.name + ": <b>" + store.quantity + " blahåj</b>",
-					);
-					marker.addTo(map);
-				}
-			})();
+					heatmap.setMap(map);
+
+					const iconSize = 48;
+					const iconSettings = {
+						size: new google.maps.Size(iconSize, iconSize),
+						origin: new google.maps.Point(0, 0),
+						anchor: new google.maps.Point(
+							iconSize / 2,
+							iconSize / 2,
+						),
+					};
+
+					const icons = {
+						opaque: [
+							"img/marker-icons/48/marker1.png",
+							"img/marker-icons/48/marker2.png",
+						].map(url => ({ url, ...iconSettings })),
+						faded: [
+							"img/marker-icons/48/marker1-faded.png",
+							"img/marker-icons/48/marker2-faded.png",
+						].map(url => ({ url, ...iconSettings })),
+					};
+
+					const infoWindow = new google.maps.InfoWindow();
+
+					for (let store of blahajData.data) {
+						const currentIcons =
+							store.quantity == 0 ? icons.faded : icons.opaque;
+
+						const marker = new google.maps.Marker({
+							position: new google.maps.LatLng(
+								store.lat,
+								store.lng,
+							),
+							map,
+							optimized: true,
+							icon: currentIcons[
+								Math.floor(Math.random() * currentIcons.length)
+							],
+						});
+
+						marker.addListener("click", () => {
+							infoWindow.close();
+							infoWindow.setContent(
+								store.name +
+									": <b>" +
+									store.quantity +
+									" blahåj</b>",
+							);
+							infoWindow.open(marker.getMap(), marker);
+						});
+					}
+				})();
+			}
 		</script>
 	</body>
 </html>
