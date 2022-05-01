@@ -117,6 +117,9 @@
 			<p style="margin-left: 32px">
 				<b><span id="total-stores"></span> stores</b> indexed
 			</p>
+			<p style="margin-left: 32px">
+				<b><span id="total-blahaj"></span> blahaj</b> swimming
+			</p>
 			<div style="flex-grow: 1"></div>
 			<a
 				href="https://maki.cafe"
@@ -166,7 +169,12 @@
 						updated.toLocaleString();
 
 					document.getElementById("total-stores").textContent =
-						blahajData.data.length;
+						blahajData.data.length.toLocaleString("en-US");
+
+					document.getElementById("total-blahaj").textContent =
+						blahajData.data
+							.reduce((a, b) => a + b.quantity, 0)
+							.toLocaleString("en-US");
 
 					const heatmap = new google.maps.visualization.HeatmapLayer({
 						dissipating: false,
