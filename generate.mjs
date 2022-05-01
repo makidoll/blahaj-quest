@@ -1,7 +1,11 @@
-const fs = require("fs-extra");
-const path = require("path");
-const axios = require("axios");
-const { blahajDb } = require("./blahaj-db");
+import path from "path";
+import fs from "fs-extra";
+import axios from "axios";
+import { blahajDb } from "./blahaj-db.mjs";
+import { fileURLToPath } from "url";
+import pLimit from "p-limit";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 async function getStock(countryCode, languageCode, itemCode) {
 	try {
@@ -56,8 +60,11 @@ async function getStock(countryCode, languageCode, itemCode) {
 		...blahajDb.oceania,
 	];
 
+	const limit = pLimit(10); // requests at a time
 	const blahajStockResponse = await Promise.all(
-		blahajRequestInfo.map(info => getStock(info[0], info[1], info[2])),
+		blahajRequestInfo.map(info =>
+			limit(() => getStock(info[0], info[1], info[2])),
+		),
 	);
 
 	// flattens [[],[],[]] to a single array

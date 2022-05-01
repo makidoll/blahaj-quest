@@ -1,4 +1,4 @@
-const blahajDb = {
+export const blahajDb = {
 	americas: [
 		// north america
 		["us", "en", "90373590"],
@@ -114,5 +114,3 @@ const blahajDb = {
 		// only 1 country and 1 planned as of 2022-05-01
 	],
 };
-
-module.exports = { blahajDb };
