@@ -163,11 +163,8 @@
 				default: 0.5, // 7 or higher
 			};
 
-			const defaultZoom = 3;
-			const map = L.map("map").setView(
-				[30.826780904779774, -30.937500000000004],
-				defaultZoom,
-			);
+			const defaultZoom = 2;
+			const map = L.map("map").setView([20, 0], defaultZoom);
 
 			L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 				attribution:
