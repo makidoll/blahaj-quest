@@ -121,7 +121,7 @@
 				<b><span id="total-stores"></span> stores</b> indexed
 			</p>
 			<p style="margin-left: 32px">
-				<b><span id="total-blahaj"></span> blahaj</b> swimming
+				<b><span id="total-blahaj"></span> blåhajar</b> swimming
 			</p>
 			<div style="flex-grow: 1"></div>
 			<a
@@ -200,11 +200,9 @@
 									Math.floor(Math.random() * markerIconsSize)
 								],
 								weight: store.quantity / 32,
-								description:
-									store.name +
-									": <b>" +
-									store.quantity +
-									" blahåj</b>",
+								description: `${store.name}: <b>${
+									store.quantity
+								} blåhaj${store.quantity == 1 ? "" : "ar"}</b>`,
 							},
 							geometry: {
 								type: "Point",
