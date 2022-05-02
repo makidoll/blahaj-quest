@@ -101,6 +101,32 @@
 				text-decoration: none;
 				color: #fff;
 			}
+
+			#style-picker {
+				position: fixed;
+				margin: auto;
+				top: 56px;
+				left: 8px;
+				border-radius: 999px;
+				padding: 0 12px;
+				background-color: #fff;
+				box-shadow: 0 0 32px rgba(0, 0, 0, 0.4);
+				font-size: 0.8em;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				height: 32px;
+			}
+
+			#style-picker label {
+				margin-left: 4px;
+			}
+
+			#style-picker .spacer {
+				border-left: solid 2px rgba(0, 0, 0, 0.1);
+				margin: -16px 8px;
+				height: 32px;
+			}
 		</style>
 	</head>
 	<body>
@@ -144,28 +170,81 @@
 			</span>
 		</div>
 		<div id="map"></div>
+		<div id="style-picker"></div>
 		<script>
 			const mapLoadImage = url =>
 				new Promise((resolve, reject) => {
 					map.loadImage(url, function (error, image) {
 						if (error) return reject(error);
-						resolve(image);
+						return resolve(image);
 					});
 				});
 
 			const maptilerKey = "0oUCRDJNWCCeE1wJsMNJ";
-			const styleUrl =
-				"https://api.maptiler.com/maps/streets/style.json?key=" +
-				maptilerKey;
+
+			const styles = [
+				[
+					"Streets",
+					"https://api.maptiler.com/maps/streets/style.json?key=" +
+						maptilerKey,
+				],
+				["Watercolor", "styles/stamen-watercolor.json"],
+			];
+
+			const stylePicker = document.getElementById("style-picker");
+			styles
+				.map(([name, url], i) => {
+					const input = document.createElement("input");
+					input.type = "radio";
+					input.id = "style-" + name;
+					input.name = "style";
+					input.autocomplete = "off";
+					if (i == 0) input.setAttribute("checked", "");
+
+					input.addEventListener("click", () => {
+						map.setStyle(url);
+					});
+
+					const label = document.createElement("label");
+					label.setAttribute("for", "style-" + name);
+					label.textContent = name;
+
+					const div = document.createElement("div");
+					div.appendChild(input);
+					div.appendChild(label);
+
+					return div;
+				})
+				.forEach((el, i) => {
+					if (i != 0) {
+						const span = document.createElement("span");
+						span.className = "spacer";
+						stylePicker.appendChild(span);
+					}
+
+					stylePicker.appendChild(el);
+				});
 
 			const map = new maplibregl.Map({
 				container: "map",
-				style: styleUrl,
+				style: styles[0][1],
 				center: [15, 20],
 				zoom: 1.8,
 			});
 
-			map.on("load", async () => {
+			map.on("style.load", () => {
+				onMapLoad();
+			});
+
+			map.on("mouseenter", "markers", function () {
+				map.getCanvas().style.cursor = "pointer";
+			});
+
+			map.on("mouseleave", "markers", function () {
+				map.getCanvas().style.cursor = "";
+			});
+
+			async function onMapLoad() {
 				const res = await fetch("blahaj.json?" + Date.now());
 				const blahajData = await res.json();
 
@@ -257,15 +336,7 @@
 						.setHTML(description)
 						.addTo(map);
 				});
-
-				map.on("mouseenter", "markers", function () {
-					map.getCanvas().style.cursor = "pointer";
-				});
-
-				map.on("mouseleave", "markers", function () {
-					map.getCanvas().style.cursor = "";
-				});
-			});
+			}
 		</script>
 	</body>
 </html>
