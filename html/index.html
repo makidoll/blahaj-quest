@@ -286,6 +286,9 @@
 				zoom: 1.8,
 			});
 
+			map.dragRotate.disable();
+			map.touchZoomRotate.disableRotation();
+
 			map.on("style.load", () => {
 				onMapLoad();
 			});
