@@ -102,15 +102,21 @@
 				color: #fff;
 			}
 
-			#style-picker {
+			.settings {
 				position: fixed;
 				margin: auto;
 				top: 56px;
 				left: 8px;
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+			}
+
+			#style-picker {
 				border-radius: 999px;
 				padding: 0 12px;
 				background-color: #fff;
-				box-shadow: 0 0 32px rgba(0, 0, 0, 0.4);
+				box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
 				font-size: 0.8em;
 				display: flex;
 				align-items: center;
@@ -126,6 +132,18 @@
 				border-left: solid 2px rgba(0, 0, 0, 0.1);
 				margin: -16px 8px;
 				height: 32px;
+			}
+
+			.show-buttons {
+				border-radius: 16px;
+				padding: 6px 12px;
+				background-color: #fff;
+				box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+				font-size: 0.8em;
+				margin-top: 8px;
+				display: flex;
+				align-items: flex-start;
+				flex-direction: column;
 			}
 		</style>
 	</head>
@@ -170,7 +188,27 @@
 			</span>
 		</div>
 		<div id="map"></div>
-		<div id="style-picker"></div>
+		<div class="settings">
+			<div id="style-picker"></div>
+			<div class="show-buttons">
+				<div>
+					<input
+						type="checkbox"
+						id="show-markers"
+						autocomplete="off"
+					/>
+					<label for="show-markers">Show blåhajar</label>
+				</div>
+				<div>
+					<input
+						type="checkbox"
+						id="show-heatmap"
+						autocomplete="off"
+					/>
+					<label for="show-heatmap">Show heatmap</label>
+				</div>
+			</div>
+		</div>
 		<script>
 			const mapLoadImage = url =>
 				new Promise((resolve, reject) => {
@@ -224,6 +262,22 @@
 
 					stylePicker.appendChild(el);
 				});
+
+			const toggleableLayers = ["markers", "heatmap"];
+			const layerVisibility = { markers: true, heatmap: true };
+
+			for (const name of toggleableLayers) {
+				const el = document.getElementById("show-" + name);
+				el.checked = layerVisibility[name];
+				el.addEventListener("change", e => {
+					layerVisibility[name] = e.target.checked;
+					map.setLayoutProperty(
+						name,
+						"visibility",
+						e.target.checked ? "visible" : "none",
+					);
+				});
+			}
 
 			const map = new maplibregl.Map({
 				container: "map",
@@ -302,6 +356,11 @@
 						},
 					},
 				});
+				map.setLayoutProperty(
+					"heatmap",
+					"visibility",
+					layerVisibility["heatmap"] ? "visible" : "none",
+				);
 
 				for (const name of [
 					...markerIcons.opaque,
@@ -325,6 +384,11 @@
 						"icon-overlap": "always",
 					},
 				});
+				map.setLayoutProperty(
+					"markers",
+					"visibility",
+					layerVisibility["markers"] ? "visible" : "none",
+				);
 
 				map.on("click", "markers", e => {
 					const coordinates =
