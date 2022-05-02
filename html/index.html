@@ -40,19 +40,11 @@
 			href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap"
 			rel="stylesheet"
 		/>
+		<script src="https://unpkg.com/maplibre-gl@2.1.9/dist/maplibre-gl.js"></script>
 		<link
+			href="https://unpkg.com/maplibre-gl@2.1.9/dist/maplibre-gl.css"
 			rel="stylesheet"
-			href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
-			integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
-			crossorigin=""
 		/>
-		<script
-			src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
-			integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
-			crossorigin=""
-		></script>
-		<script src="https://unpkg.com/heatmap.js@2.0.5/build/heatmap.js"></script>
-		<script src="leaflet-heatmap.js"></script>
 		<script async defer src="https://buttons.github.io/buttons.js"></script>
 		<style>
 			* {
@@ -64,12 +56,10 @@
 				font-family: "Noto Sans", sans-serif;
 			}
 
-			.leaflet-container {
+			.maplibregl-popup-content {
 				font-family: "Noto Sans", sans-serif;
-			}
-
-			.leaflet-popup-content-wrapper {
 				border-radius: 999px;
+				padding: 12px 16px;
 			}
 
 			#map {
@@ -155,41 +145,27 @@
 		</div>
 		<div id="map"></div>
 		<script>
-			const zoomHeatRadiusMap = {
-				0: 16,
-				1: 12,
-				2: 8,
-				3: 4,
-				4: 3,
-				5: 2,
-				6: 1,
-				default: 0.5, // 7 or higher
-			};
+			const mapLoadImage = url =>
+				new Promise((resolve, reject) => {
+					map.loadImage(url, function (error, image) {
+						if (error) return reject(error);
+						resolve(image);
+					});
+				});
 
-			const defaultZoom = 3;
-			const map = L.map("map").setView([20, 0], defaultZoom);
+			const maptilerKey = "0oUCRDJNWCCeE1wJsMNJ";
+			const styleUrl =
+				"https://api.maptiler.com/maps/streets/style.json?key=" +
+				maptilerKey;
 
-			// L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-			// 	attribution:
-			// 		'&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>',
-			// 	maxZoom: 19,
-			// }).addTo(map);
+			const map = new maplibregl.Map({
+				container: "map",
+				style: styleUrl,
+				center: [15, 20],
+				zoom: 1.8,
+			});
 
-			const mapboxAccessToken =
-				"pk.eyJ1IjoibWFraXRzdW5lIiwiYSI6ImNsMm54bW9sNjI2ZjMzZHBscXpwdHR0NmEifQ.pYKnp96ZYlfbAFNf3VfSPw";
-
-			L.tileLayer(
-				"https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=" +
-					mapboxAccessToken,
-				{
-					attribution:
-						'© <a href="https://www.mapbox.com/feedback/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-					tileSize: 512,
-					zoomOffset: -1,
-				},
-			).addTo(map);
-
-			(async () => {
+			map.on("load", async () => {
 				const res = await fetch("blahaj.json?" + Date.now());
 				const blahajData = await res.json();
 
@@ -205,63 +181,93 @@
 						.reduce((a, b) => a + b.quantity, 0)
 						.toLocaleString("en-US");
 
-				const heatmapLayer = new HeatmapOverlay({
-					radius: zoomHeatRadiusMap[defaultZoom],
-					maxOpacity: 0.6,
-					scaleRadius: true,
-					useLocalExtrema: true,
-					latField: "lat",
-					lngField: "lng",
-					valueField: "quantity",
-				});
-				heatmapLayer.setData({ data: blahajData.data });
-				heatmapLayer.addTo(map);
-				window.heatmapLayer = heatmapLayer;
-
-				map.on("zoomend", e => {
-					const zoom = e.target.getZoom();
-					const radius =
-						zoomHeatRadiusMap[zoom] ?? zoomHeatRadiusMap["default"];
-
-					console.log(`zoom: ${zoom}, radius: ${radius}`);
-					heatmapLayer.cfg.radius = radius;
-					heatmapLayer._draw();
-				});
-
-				const iconSize = 48;
-				const iconSettings = {
-					// iconUrl: url,
-					iconSize: [iconSize, iconSize],
-					iconAnchor: [iconSize / 2, iconSize / 2],
-					popupAnchor: [0, -iconSize / 3],
+				const markerIconsSize = 2;
+				const markerIcons = {
+					opaque: ["marker1", "marker2"],
+					faded: ["marker1-faded", "marker2-faded"],
 				};
 
-				const icons = {
-					opaque: [
-						"img/marker-icons/48/marker1.png",
-						"img/marker-icons/48/marker2.png",
-					].map(iconUrl => L.icon({ iconUrl, ...iconSettings })),
-					faded: [
-						"img/marker-icons/48/marker1-faded.png",
-						"img/marker-icons/48/marker2-faded.png",
-					].map(iconUrl => L.icon({ iconUrl, ...iconSettings })),
-				};
+				map.addSource("blahaj", {
+					type: "geojson",
+					data: {
+						type: "FeatureCollection",
+						features: blahajData.data.map(store => ({
+							type: "Feature",
+							properties: {
+								icon: (store.quantity == 0
+									? markerIcons.faded
+									: markerIcons.opaque)[
+									Math.floor(Math.random() * markerIconsSize)
+								],
+								weight: store.quantity / 32,
+								description:
+									store.name +
+									": <b>" +
+									store.quantity +
+									" blahåj</b>",
+							},
+							geometry: {
+								type: "Point",
+								coordinates: [store.lng, store.lat],
+							},
+						})),
+					},
+				});
 
-				for (let store of blahajData.data) {
-					const currentIcons =
-						store.quantity == 0 ? icons.faded : icons.opaque;
+				map.addLayer({
+					id: "heatmap",
+					source: "blahaj",
+					type: "heatmap",
+					paint: {
+						"heatmap-weight": {
+							property: "weight",
+							type: "identity",
+						},
+					},
+				});
 
-					const marker = L.marker([store.lat, store.lng], {
-						icon: currentIcons[
-							Math.floor(Math.random() * currentIcons.length)
-						],
-					});
-					marker.bindPopup(
-						store.name + ": <b>" + store.quantity + " blahåj</b>",
+				for (const name of [
+					...markerIcons.opaque,
+					...markerIcons.faded,
+				]) {
+					map.addImage(
+						name,
+						await mapLoadImage(
+							"img/marker-icons/48/" + name + ".png",
+						),
 					);
-					marker.addTo(map);
 				}
-			})();
+
+				map.addLayer({
+					id: "markers",
+					source: "blahaj",
+					type: "symbol",
+					layout: {
+						"icon-image": ["get", "icon"],
+						"icon-size": 1,
+						"icon-overlap": "always",
+					},
+				});
+
+				map.on("click", "markers", e => {
+					const coordinates =
+						e.features[0].geometry.coordinates.slice();
+					const description = e.features[0].properties.description;
+
+					new maplibregl.Popup()
+						.setLngLat(coordinates)
+						.setHTML(description)
+						.addTo(map);
+				});
+
+				map.on("mouseenter", "markers", function () {
+					map.getCanvas().style.cursor = "pointer";
+				});
+
+				map.on("mouseleave", "markers", function () {
+					map.getCanvas().style.cursor = "";
+				});
+			});
 		</script>
 	</body>
 </html>
