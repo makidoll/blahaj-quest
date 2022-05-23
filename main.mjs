@@ -12,10 +12,8 @@ const blahajDataPath = path.resolve(publicDir, "blahaj.json");
 const app = express();
 
 async function updateBlahajData() {
-	console.log("Updating blahaj data");
 	const blahajData = await generateBlahajData();
 	await fs.writeFile(blahajDataPath, JSON.stringify(blahajData));
-	console.log("Done");
 }
 
 fs.pathExists(blahajDataPath).then(exists => {

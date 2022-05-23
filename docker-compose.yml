@@ -1,0 +1,26 @@
+version: "3.8"
+networks:
+    traefik:
+        external:
+            name: traefik
+services:
+    blahaj-finder:
+        build: .
+        restart: always
+        labels:
+            - traefik.enable=true
+
+            - traefik.http.routers.blahaj-finder.rule=Host("blahaj.quest") || Host("www.blahaj.quest")
+            - traefik.http.routers.blahaj-finder.entrypoints=websecure
+            - traefik.http.routers.blahaj-finder.service=blahaj-finder
+            - traefik.http.routers.blahaj-finder.tls.certresolver=le
+            - traefik.http.routers.blahaj-finder.middlewares=www-to-blahaj-finder
+            - traefik.http.services.blahaj-finder.loadbalancer.server.port=8080
+
+            - traefik.http.middlewares.www-to-blahaj-finder.redirectregex.regex=^https?://www.blahaj.quest
+            - traefik.http.middlewares.www-to-blahaj-finder.redirectregex.replacement=https://blahaj.quest$${1}
+
+            - traefik.docker.network=traefik
+        networks:
+            - default
+            - traefik
