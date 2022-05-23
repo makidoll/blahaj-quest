@@ -1,6 +1,11 @@
+import path from "path";
+import fs from "fs-extra";
 import axios from "axios";
 import { blahajDb } from "./blahaj-db.mjs";
+import { fileURLToPath } from "url";
 import pLimit from "p-limit";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 async function getStock(countryCode, languageCode, itemCode) {
 	try {
@@ -46,7 +51,7 @@ async function getStock(countryCode, languageCode, itemCode) {
 	}
 }
 
-export async function generateBlahajData() {
+(async () => {
 	const blahajRequestInfo = [
 		...blahajDb.americas,
 		...blahajDb.europe,
@@ -66,8 +71,12 @@ export async function generateBlahajData() {
 	const blahajData = [].concat.apply([], blahajStockResponse);
 	console.log(`Fetched data from ${blahajData.length} stores`);
 
-	return {
+	const publicPath = path.resolve(__dirname, "public");
+
+	await fs.remove(publicPath);
+	await fs.copy(path.resolve(__dirname, "html"), publicPath);
+	await fs.writeJson(path.resolve(publicPath, "blahaj.json"), {
 		updated: new Date().toISOString(),
 		data: blahajData,
-	};
-}
+	});
+})();
