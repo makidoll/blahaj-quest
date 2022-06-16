@@ -218,19 +218,20 @@
 					});
 				});
 
-			const maptilerKey = "0oUCRDJNWCCeE1wJsMNJ";
+			const maptilerKey = "";
 
 			const styles = [
 				[
-					"Streets",
-					"https://api.maptiler.com/maps/streets/style.json?key=" +
-						maptilerKey,
-				],
-				["Watercolor", "styles/stamen-watercolor.json"],
-				[
-					"Cutelab (self-hosted)",
+					"Self-hosted",
 					"https://tileserver.cutelab.space/styles/streets/style.json",
 				],
+				["OpenStreetMap", "styles/osm-mapnik.json"],
+				// [
+				// 	"MapTiler (might not work)",
+				// 	"https://api.maptiler.com/maps/streets/style.json?key=" +
+				// 		maptilerKey,
+				// ],
+				["Stamen Watercolor", "styles/stamen-watercolor.json"],
 			];
 
 			const stylePicker = document.getElementById("style-picker");
