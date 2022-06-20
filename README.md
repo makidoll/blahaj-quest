@@ -6,5 +6,5 @@ https://blahaj.quest
 
 ```
 yarn
-yarn build
+yarn start
 ```
