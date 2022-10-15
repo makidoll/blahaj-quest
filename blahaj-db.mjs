@@ -3,8 +3,8 @@ export const blahajDb = {
 		// north america
 		["us", "en", "90373590"],
 		["ca", "en", "90373590"],
-		// south america
-		["mx", "es", "90373590"],
+		["mx", "es", "90373590"], // mexico
+		["cl", "es", "30373588"], // chile
 		// dominica, regional site
 		// pureto rico, regional site
 	],
@@ -37,15 +37,15 @@ export const blahajDb = {
 		["no", "no", "30373588"], // norway
 		["ie", "en", "30373588"], // ireland
 		["hr", "hr", "30373588"], // croatia
-		// moldava has like fake ikea what
+		// moldova has like fake ikea what
 		// lithuania has a different api
 		// north macedonia has no ikea
 		["si", "sl", "30373588"], // slovenia
 		// latvia has a different api
 		// montenegro has another fake ikea
-		// luxemberg has no ikea yet, until 2025
+		// luxembourg has no ikea yet, until 2025
 		// iceland has a different api
-		// andora has no ikea
+		// andorra has no ikea
 		// monaco has no ikea
 		// liechtenstein has no ikea
 		// san marino has no ikea
