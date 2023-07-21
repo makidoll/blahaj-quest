@@ -246,10 +246,10 @@
 			const maptilerKey = "";
 
 			const styles = [
-				[
-					"Self-hosted",
-					"https://tileserver-gl.cutelab.space/styles/streets/style.json",
-				],
+				// [
+				// 	"Self-hosted",
+				// 	"https://tileserver-gl.cutelab.space/styles/streets/style.json",
+				// ],
 				["OpenStreetMap", "styles/osm-mapnik.json"],
 				// [
 				// 	"MapTiler (might not work)",
@@ -271,6 +271,9 @@
 
 					input.addEventListener("click", () => {
 						map.setStyle(url);
+						setTimeout(() => {
+							onMapLoad();
+						}, 200);
 					});
 
 					const label = document.createElement("label");
