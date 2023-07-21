@@ -1,8 +1,7 @@
 version: "3.8"
 networks:
     traefik:
-        external:
-            name: traefik
+        external: true
 services:
     blahaj-finder:
         build: .
