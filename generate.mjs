@@ -2,11 +2,20 @@ import axios from "axios";
 import { blahajDb } from "./blahaj-db.mjs";
 import pLimit from "p-limit";
 
-async function getStock(countryCode, languageCode, itemCode) {
+async function getStock(countryCode, languageCode, itemCode, extraStores) {
 	try {
-		const stores = await axios({
-			url: `https://www.ikea.com/${countryCode}/${languageCode}/meta-data/navigation/stores-detailed.json`,
-		});
+		let stores = [];
+
+		try {
+			const foundStores = await axios({
+				url: `https://www.ikea.com/${countryCode}/${languageCode}/meta-data/navigation/stores-detailed.json`,
+			});
+			stores = foundStores.data;
+		} catch (error) {}
+
+		if (extraStores != null) {
+			stores = [...stores, ...extraStores];
+		}
 
 		const stock = await axios({
 			url: `https://api.ingka.ikea.com/cia/availabilities/ru/${countryCode}`,
@@ -29,7 +38,7 @@ async function getStock(countryCode, languageCode, itemCode) {
 				if (quantity == null) return null;
 
 				const storeId = storeAvail?.classUnitKey?.classUnitCode;
-				const store = stores.data.find(store => store.id == storeId);
+				const store = stores.find(store => store.id == storeId);
 				if (store == null) return null;
 
 				return {
@@ -42,6 +51,7 @@ async function getStock(countryCode, languageCode, itemCode) {
 			.filter(store => store != null);
 	} catch (error) {
 		console.error(countryCode + "-" + languageCode + " failed");
+		// console.error(error);
 		return [];
 	}
 }
@@ -57,9 +67,7 @@ export async function generateBlahajData() {
 
 	const limit = pLimit(10); // requests at a time
 	const blahajStockResponse = await Promise.all(
-		blahajRequestInfo.map(info =>
-			limit(() => getStock(info[0], info[1], info[2])),
-		),
+		blahajRequestInfo.map(info => limit(() => getStock(...info))),
 	);
 
 	// flattens [[],[],[]] to a single array

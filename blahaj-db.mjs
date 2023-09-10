@@ -1,3 +1,5 @@
+// country code, language code
+// { [continent: string]: [string, string, string][] }
 export const blahajDb = {
 	americas: [
 		// north america
@@ -16,38 +18,54 @@ export const blahajDb = {
 		["fr", "fr", "30373588"], // france
 		["it", "it", "30373588"], // italy
 		["es", "es", "30373588"], // spain
-		["ua", "uk", "30373588"], // ukraine
 		["pl", "pl", "30373588"], // poland
+		["ua", "uk", "30373588"], // ukraine
 		["ro", "ro", "30373588"], // romania
 		["nl", "nl", "30373588"], // netherlands
 		["be", "nl", "30373588"], // belgium
+		["se", "sv", "30373588"], // sweden
 		["cz", "cs", "30373588"], // czech republic
 		// greece has a different api
 		["pt", "pt", "30373588"], // portugal
-		["se", "sv", "30373588"], // sweden
 		["hu", "hu", "30373588"], // hungary
 		// belarus has no ikea
 		["at", "de", "30373588"], // austria
-		["rs", "sr", "30373588"], // serbia
 		["ch", "en", "30373588"], // switzerland
+		["rs", "sr", "30373588"], // serbia
 		// bulgaria has a different api
 		["dk", "da", "30373588"], // denmark
-		["fi", "fi", "30373588"], // finland
 		["sk", "sk", "30373588"], // slovakia
+		["fi", "fi", "30373588"], // finland
 		["no", "no", "30373588"], // norway
 		["ie", "en", "30373588"], // ireland
 		["hr", "hr", "30373588"], // croatia
 		// moldova has like fake ikea what
+		// bosnia and herzegovina
+		// albania
 		// lithuania has a different api
-		// north macedonia has no ikea
 		["si", "sl", "30373588"], // slovenia
+		// north macedonia has no ikea
 		// latvia has a different api
-		// montenegro has another fake ikea
+		[
+			"ee",
+			"en",
+			"30373588",
+			[
+				{
+					id: "648",
+					name: "IKEA Tallinn",
+					lat: "59.338481",
+					lng: "24.827531",
+				},
+			],
+		], // estonia
 		// luxembourg has no ikea yet, until 2025
+		// montenegro has another fake ikea
+		// malta
 		// iceland has a different api
 		// andorra has no ikea
-		// monaco has no ikea
 		// liechtenstein has no ikea
+		// monaco has no ikea
 		// san marino has no ikea
 		// holy see has no ikea
 	],
