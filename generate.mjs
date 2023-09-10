@@ -17,6 +17,10 @@ async function getStock(countryCode, languageCode, itemCode, extraStores) {
 			stores = [...stores, ...extraStores];
 		}
 
+		if (stores == null || stores.length == 0) {
+			throw new Error("No stores");
+		}
+
 		const stock = await axios({
 			url: `https://api.ingka.ikea.com/cia/availabilities/ru/${countryCode}`,
 			headers: {
