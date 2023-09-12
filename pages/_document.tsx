@@ -22,7 +22,7 @@ export default function Document() {
 				<title>{title}</title>
 				<meta
 					name="viewport"
-					content="width=device-width, initial-scale=0.85"
+					content="width=device-width, initial-scale=0.7"
 				/>
 				<link
 					rel="icon"
