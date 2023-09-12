@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import GitHubButton from "react-github-btn";
-import { FaArrowRight } from "react-icons/fa6";
+import { FaArrowRight, FaCode } from "react-icons/fa6";
 import BlahajMap from "../components/blahaj-map";
 import MapSettings from "../components/map-settings";
 import blahajImage from "../images/full-flipped.png";
@@ -103,8 +103,8 @@ export default function Home(props: { blahajData: BlahajData }) {
 					justifyContent={"center"}
 					fontWeight={500}
 				>
-					See more
-					<Icon as={FaArrowRight} ml={1} />
+					<Icon as={FaCode} mr={1.5} />
+					See code
 				</Link>
 			</VStack>
 		</>
