@@ -1,20 +1,32 @@
 {
-  "name": "blahaj-finder-next-gen",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@types/node": "20.6.0",
-    "@types/react": "18.2.21",
-    "@types/react-dom": "18.2.7",
-    "next": "13.4.19",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "typescript": "5.2.2"
-  }
+	"name": "blahaj-finder",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"start": "next dev",
+		"build": "next build",
+		"serve": "next start"
+	},
+	"dependencies": {
+		"@chakra-ui/next-js": "^2.1.5",
+		"@chakra-ui/react": "^2.8.1",
+		"@emotion/react": "^11.11.1",
+		"@emotion/styled": "^11.11.0",
+		"@fontsource/inter": "^5.0.8",
+		"@types/maplibre-gl": "^1.14.0",
+		"@types/node": "20.6.0",
+		"@types/react": "18.2.21",
+		"@types/react-dom": "18.2.7",
+		"axios": "^1.5.0",
+		"framer-motion": "^10.16.4",
+		"next": "13.4.19",
+		"p-limit": "^4.0.0",
+		"react": "18.2.0",
+		"react-dom": "18.2.0",
+		"react-github-btn": "^1.4.0",
+		"react-icons": "^4.11.0",
+		"sharp": "^0.32.5",
+		"typescript": "5.2.2",
+		"zustand": "^4.4.1"
+	}
 }

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>🦈🔍 BLÅHAJ finder</title>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="32x32"
+			href="favicon-32x32.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="16x16"
+			href="favicon-16x16.png"
+		/>
+		<meta name="title" content="🦈🔍 BLÅHAJ finder" />
+		<meta
+			name="description"
+			content="❤️ All BLÅHAJ love you and they need you! 😊 Find them with this map and take good care of them."
+		/>
+		<meta
+			name="keywords"
+			content="blahaj, shark, ikea, stores, trans, transgender, plush, plushie, stuffie, finder, quest, search"
+		/>
+		<meta name="robots" content="index, follow" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<meta name="msapplication-TileColor" content="#468293" />
+		<!-- <meta name="msapplication-config" content="/assets/icons/browserconfig.xml"> -->
+		<meta name="theme-color" content="#468293" />
+		<meta property="og:url" content="https://blahaj.quest/" />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="🦈🔍 BLÅHAJ finder" />
+		<meta
+			property="og:description"
+			content="❤️ All BLÅHAJ love you and they need you! 😊 Find them with this map and take good care of them."
+		/>
+		<meta
+			property="og:image"
+			content="https://blahaj.quest/img/open-graph-image.jpg"
+		/>
+		<meta property="twitter:url" content="https://blahaj.quest/" />
+		<meta name="twitter:title" content="🦈🔍 BLÅHAJ finder" />
+		<meta
+			name="twitter:description"
+			content="❤️ All BLÅHAJ love you and they need you! 😊 Find them with this map and take good care of them."
+		/>
+		<meta
+			name="twitter:image"
+			content="https://blahaj.quest/img/open-graph-image.jpg"
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap"
+			rel="stylesheet"
+		/>
+		<script src="https://unpkg.com/maplibre-gl@2.1.9/dist/maplibre-gl.js"></script>
+		<link
+			href="https://unpkg.com/maplibre-gl@2.1.9/dist/maplibre-gl.css"
+			rel="stylesheet"
+		/>
+		<script async defer src="https://buttons.github.io/buttons.js"></script>
+		<script
+			defer
+			data-domain="blahaj.quest"
+			data-api="https://ithelpsme.hotmilk.space/api/event"
+		>
+			// prettier-ignore
+			!function(){"use strict";var a=window.location,r=window.document,o=r.currentScript,l=o.getAttribute("data-api")||new URL(o.src).origin+"/api/event";function s(t,e){t&&console.warn("Ignoring Event: "+t),e&&e.callback&&e.callback()}function t(t,e){if(/^localhost$|^127(\.[0-9]+){0,2}\.[0-9]+$|^\[::1?\]$/.test(a.hostname)||"file:"===a.protocol)return s("localhost",e);if(window._phantom||window.__nightmare||window.navigator.webdriver||window.Cypress)return s(null,e);try{if("true"===window.localStorage.plausible_ignore)return s("localStorage flag",e)}catch(t){}var n={},i=(n.n=t,n.u=a.href,n.d=o.getAttribute("data-domain"),n.r=r.referrer||null,e&&e.meta&&(n.m=JSON.stringify(e.meta)),e&&e.props&&(n.p=e.props),new XMLHttpRequest);i.open("POST",l,!0),i.setRequestHeader("Content-Type","text/plain"),i.send(JSON.stringify(n)),i.onreadystatechange=function(){4===i.readyState&&e&&e.callback&&e.callback()}}var e=window.plausible&&window.plausible.q||[];window.plausible=t;for(var n,i=0;i<e.length;i++)t.apply(this,e[i]);function p(){n!==a.pathname&&(n=a.pathname,t("pageview"))}var c,w=window.history;w.pushState&&(c=w.pushState,w.pushState=function(){c.apply(this,arguments),p()},window.addEventListener("popstate",p)),"prerender"===r.visibilityState?r.addEventListener("visibilitychange",function(){n||"visible"!==r.visibilityState||p()}):p()}();
+		</script>
+		<style>
+			* {
+				margin: 0;
+			}
+
+			body {
+				overflow: hidden;
+				font-family: "Noto Sans", sans-serif;
+			}
+
+			.maplibregl-popup-content {
+				font-family: "Noto Sans", sans-serif;
+				border-radius: 999px;
+				padding: 12px 16px;
+			}
+
+			#map {
+				width: 100vw;
+				height: calc(100vh - 48px);
+			}
+
+			.header {
+				width: 100vw;
+				height: 48px;
+				display: flex;
+				align-items: center;
+				justify-content: flex-start;
+				flex-direction: row;
+				color: #fff;
+				background-image: linear-gradient(
+						0deg,
+						rgba(29, 31, 33, 0.3),
+						rgba(29, 31, 33, 0.3)
+					),
+					linear-gradient(0deg, #468293, #468293);
+			}
+
+			.icon {
+				width: 128px;
+				height: 48px;
+				background-image: url("img/full-flipped.png");
+				background-size: cover;
+				background-position: 50% 60%;
+			}
+
+			.title {
+				font-size: 1.6rem;
+				margin-left: 16px;
+				margin-top: -4px;
+			}
+
+			.title a {
+				text-decoration: none;
+				color: #fff;
+			}
+
+			.settings {
+				position: fixed;
+				margin: auto;
+				top: 56px;
+				left: 8px;
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+			}
+
+			#style-picker {
+				border-radius: 999px;
+				padding: 0 12px;
+				background-color: #fff;
+				box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+				font-size: 0.8em;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				height: 32px;
+			}
+
+			#style-picker label {
+				margin-left: 4px;
+			}
+
+			#style-picker .spacer {
+				border-left: solid 2px rgba(0, 0, 0, 0.1);
+				margin: -16px 8px;
+				height: 32px;
+			}
+
+			.show-buttons {
+				border-radius: 16px;
+				padding: 6px 12px;
+				background-color: #fff;
+				box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+				font-size: 0.8em;
+				margin-top: 8px;
+				display: flex;
+				align-items: flex-start;
+				flex-direction: column;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<div class="icon"></div>
+			<h1 class="title">
+				<a
+					href="https://www.ikea.com/us/en/p/blahaj-soft-toy-shark-90373590/"
+				>
+					BLÅHAJ finder
+				</a>
+			</h1>
+			<p style="margin-left: 32px">
+				Last updated: <b id="updated"></b>
+				<span style="opacity: 0.6">(updates hourly)</span>
+			</p>
+			<p style="margin-left: 32px">
+				<b><span id="total-stores"></span> stores</b> indexed
+			</p>
+			<p style="margin-left: 32px">
+				<b><span id="total-blahaj"></span> blåhajar</b> swimming
+			</p>
+			<div style="flex-grow: 1"></div>
+			<a
+				href="https://maki.cafe"
+				style="color: #fff; text-decoration: none; margin-right: 16px"
+			>
+				Made by <b>Maki</b>
+			</a>
+			<span style="margin-right: 12px">
+				<a
+					class="github-button"
+					href="https://github.com/makitsune/blahaj-finder"
+					data-color-scheme="no-preference: light; light: light; dark: light;"
+					data-size="large"
+					data-show-count="true"
+					aria-label="Star makitsune/blahaj-finder on GitHub"
+				>
+					Star
+				</a>
+			</span>
+		</div>
+		<div id="map"></div>
+		<div class="settings">
+			<div id="style-picker"></div>
+			<div class="show-buttons">
+				<div>
+					<input
+						type="checkbox"
+						id="show-markers"
+						autocomplete="off"
+					/>
+					<label for="show-markers">Show blåhajar</label>
+				</div>
+				<div>
+					<input
+						type="checkbox"
+						id="show-heatmap"
+						autocomplete="off"
+					/>
+					<label for="show-heatmap">Show heatmap</label>
+				</div>
+			</div>
+		</div>
+		<script>
+			const mapLoadImage = url =>
+				new Promise((resolve, reject) => {
+					map.loadImage(url, function (error, image) {
+						if (error) return reject(error);
+						return resolve(image);
+					});
+				});
+
+			const maptilerKey = "";
+
+			const styles = [
+				// [
+				// 	"Self-hosted",
+				// 	"https://tileserver-gl.cutelab.space/styles/streets/style.json",
+				// ],
+				["OpenStreetMap", "styles/osm-mapnik.json"],
+				// [
+				// 	"MapTiler (might not work)",
+				// 	"https://api.maptiler.com/maps/streets/style.json?key=" +
+				// 		maptilerKey,
+				// ],
+				["Stamen Watercolor", "styles/stamen-watercolor.json"],
+			];
+
+			const stylePicker = document.getElementById("style-picker");
+			styles
+				.map(([name, url], i) => {
+					const input = document.createElement("input");
+					input.type = "radio";
+					input.id = "style-" + name;
+					input.name = "style";
+					input.autocomplete = "off";
+					if (i == 0) input.setAttribute("checked", "");
+
+					input.addEventListener("click", () => {
+						map.setStyle(url);
+						setTimeout(() => {
+							onMapLoad();
+						}, 200);
+					});
+
+					const label = document.createElement("label");
+					label.setAttribute("for", "style-" + name);
+					label.textContent = name;
+
+					const div = document.createElement("div");
+					div.appendChild(input);
+					div.appendChild(label);
+
+					return div;
+				})
+				.forEach((el, i) => {
+					if (i != 0) {
+						const span = document.createElement("span");
+						span.className = "spacer";
+						stylePicker.appendChild(span);
+					}
+
+					stylePicker.appendChild(el);
+				});
+
+			const toggleableLayers = ["markers", "heatmap"];
+			const layerVisibility = { markers: true, heatmap: true };
+
+			for (const name of toggleableLayers) {
+				const el = document.getElementById("show-" + name);
+				el.checked = layerVisibility[name];
+				el.addEventListener("change", e => {
+					layerVisibility[name] = e.target.checked;
+					map.setLayoutProperty(
+						name,
+						"visibility",
+						e.target.checked ? "visible" : "none",
+					);
+				});
+			}
+
+			const map = new maplibregl.Map({
+				container: "map",
+				style: styles[0][1],
+				center: [15, 20],
+				zoom: 1.8,
+			});
+
+			map.addControl(new maplibregl.NavigationControl());
+
+			map.dragRotate.disable();
+			map.touchZoomRotate.disableRotation();
+
+			map.on("style.load", () => {
+				onMapLoad();
+			});
+
+			map.on("mouseenter", "markers", function () {
+				map.getCanvas().style.cursor = "pointer";
+			});
+
+			map.on("mouseleave", "markers", function () {
+				map.getCanvas().style.cursor = "";
+			});
+
+			async function onMapLoad() {
+				const res = await fetch("blahaj.json?" + Date.now());
+				const blahajData = await res.json();
+
+				const updated = new Date(blahajData.updated);
+				document.getElementById("updated").textContent =
+					updated.toLocaleString();
+
+				document.getElementById("total-stores").textContent =
+					blahajData.data.length.toLocaleString("en-US");
+
+				document.getElementById("total-blahaj").textContent =
+					blahajData.data
+						.reduce((a, b) => a + b.quantity, 0)
+						.toLocaleString("en-US");
+
+				const markerIconsSize = 2;
+				const markerIcons = {
+					opaque: ["marker1", "marker2"],
+					faded: ["marker1-faded", "marker2-faded"],
+				};
+
+				map.addSource("blahaj", {
+					type: "geojson",
+					data: {
+						type: "FeatureCollection",
+						features: blahajData.data.map(store => ({
+							type: "Feature",
+							properties: {
+								icon: (store.quantity == 0
+									? markerIcons.faded
+									: markerIcons.opaque)[
+									Math.floor(Math.random() * markerIconsSize)
+								],
+								weight: store.quantity / 32,
+								description: `${store.name}: <b>${
+									store.quantity
+								} blåhaj${store.quantity == 1 ? "" : "ar"}</b>`,
+							},
+							geometry: {
+								type: "Point",
+								coordinates: [store.lng, store.lat],
+							},
+						})),
+					},
+				});
+
+				map.addLayer({
+					id: "heatmap",
+					source: "blahaj",
+					type: "heatmap",
+					paint: {
+						"heatmap-weight": {
+							property: "weight",
+							type: "identity",
+						},
+						"heatmap-radius": 40,
+					},
+				});
+				map.setLayoutProperty(
+					"heatmap",
+					"visibility",
+					layerVisibility["heatmap"] ? "visible" : "none",
+				);
+
+				for (const name of [
+					...markerIcons.opaque,
+					...markerIcons.faded,
+				]) {
+					map.addImage(
+						name,
+						await mapLoadImage(
+							"img/marker-icons/48/" + name + ".png",
+						),
+					);
+				}
+
+				map.addLayer({
+					id: "markers",
+					source: "blahaj",
+					type: "symbol",
+					layout: {
+						"icon-image": ["get", "icon"],
+						"icon-size": 1,
+						"icon-overlap": "always",
+					},
+				});
+				map.setLayoutProperty(
+					"markers",
+					"visibility",
+					layerVisibility["markers"] ? "visible" : "none",
+				);
+
+				map.on("click", "markers", e => {
+					const coordinates =
+						e.features[0].geometry.coordinates.slice();
+					const description = e.features[0].properties.description;
+
+					new maplibregl.Popup()
+						.setLngLat(coordinates)
+						.setHTML(description)
+						.addTo(map);
+				});
+			}
+		</script>
+	</body>
+</html>
