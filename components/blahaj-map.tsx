@@ -70,7 +70,7 @@ export default function BlahajMap(props: {
 						property: "weight",
 						type: "identity",
 					},
-					"heatmap-radius": 40,
+					"heatmap-radius": 60,
 				},
 			});
 
