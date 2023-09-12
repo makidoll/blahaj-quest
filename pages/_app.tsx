@@ -83,7 +83,7 @@ const description =
 const color = "#3c8ea7";
 
 const url = "https://blahaj.quest/";
-const imageUrl = "https://blahaj.quest/img/open-graph-image.jpg";
+const imageUrl = "https://blahaj.quest/img/open-graph-image.jpg?2";
 
 const keywords =
 	"blahaj, shark, ikea, stores, trans, transgender, plush, plushie, stuffie, finder, quest, search";
