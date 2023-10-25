@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-	reactStrictMode: true,
+	reactStrictMode: false, // can cause things to render twice
 	webpack: config => {
 		config.resolve.fallback = { fs: false };
 		return config;
