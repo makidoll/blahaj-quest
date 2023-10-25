@@ -20,9 +20,6 @@ dependencies:
   '@fontsource/inter':
     specifier: ^5.0.8
     version: 5.0.15
-  '@types/maplibre-gl':
-    specifier: ^1.14.0
-    version: 1.14.0
   '@types/node':
     specifier: 20.6.0
     version: 20.6.0
@@ -38,12 +35,18 @@ dependencies:
   framer-motion:
     specifier: ^10.16.4
     version: 10.16.4(react-dom@18.2.0)(react@18.2.0)
+  maplibre-gl:
+    specifier: ^3.5.2
+    version: 3.5.2
   next:
     specifier: 13.4.19
     version: 13.4.19(react-dom@18.2.0)(react@18.2.0)
   p-limit:
     specifier: ^4.0.0
     version: 4.0.0
+  protomaps-themes-base:
+    specifier: 2.0.0-alpha.1
+    version: 2.0.0-alpha.1
   react:
     specifier: 18.2.0
     version: 18.2.0
@@ -1523,13 +1526,6 @@ packages:
       '@types/pbf': 3.0.4
     dev: false
 
-  /@types/maplibre-gl@1.14.0:
-    resolution: {integrity: sha512-I6ibscT7UdL1oOqqCz9s1gjcolLaUPkHIIfMLusczTvlsMhjORyS6sE1g4V/NESAOL5KhNQX3/31LJH+OCGjkg==}
-    deprecated: This is a stub types definition. maplibre-gl provides its own type definitions, so you do not need this installed.
-    dependencies:
-      maplibre-gl: 3.5.2
-    dev: false
-
   /@types/node@20.6.0:
     resolution: {integrity: sha512-najjVq5KN2vsH2U/xyh2opaSEz6cZMR2SetLIlxlj08nOcmPOemJmUK2o4kUzfLqfrWE0PIrNeE16XhYDd3nqg==}
     dev: false
@@ -2316,6 +2312,10 @@ packages:
 
   /protocol-buffers-schema@3.6.0:
     resolution: {integrity: sha512-TdDRD+/QNdrCGCE7v8340QyuXd4kIWIgapsE2+n/SaGiSSbomYl4TjHlvIoCWRpE7wFt02EpB35VVA2ImcBVqw==}
+    dev: false
+
+  /protomaps-themes-base@2.0.0-alpha.1:
+    resolution: {integrity: sha512-eGAiUpBPAohnMvEHoF7NRWp7YuTNk/JsAVJ4733jqNw+/EF6Q5TMjqCOZScG3YSri5NStJg+9Upb95M2AQ3pjw==}
     dev: false
 
   /proxy-from-env@1.1.0:

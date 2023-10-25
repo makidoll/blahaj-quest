@@ -104,12 +104,16 @@ export default function BlahajMap(props: {
 		if (mapContainer.current == null) return;
 		if (mapRef.current != null) return;
 
+		// const protocol = new pmtiles.Protocol();
+		// MapLibreGL.addProtocol("pmtiles", protocol.tile);
+
 		const map = new Map({
 			container: mapContainer.current,
 			style: MapStyleConfigs[style],
 			center: [15, 20],
 			zoom: 1.8,
 		});
+
 		mapRef.current = map;
 
 		map.addControl(new NavigationControl());

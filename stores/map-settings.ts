@@ -1,6 +1,8 @@
+import layers from "protomaps-themes-base";
 import { create } from "zustand";
 
 export enum MapStyle {
+	Protomaps = "Protomaps",
 	OpenStreetMap = "OpenStreetMap",
 	StamenWatercolor = "StamenWatercolor",
 }
@@ -17,7 +19,7 @@ interface MapSettings {
 export const useMapSettings = create<MapSettings>()(
 	// persist(
 	set => ({
-		style: MapStyle.OpenStreetMap,
+		style: MapStyle.Protomaps,
 		blahajLayer: true,
 		heatmapLayer: false,
 		setStyle: (style: MapStyle) => set({ style }),
@@ -31,7 +33,32 @@ export const useMapSettings = create<MapSettings>()(
 	// ),
 );
 
+// light, dark, white, black, grayscale or debug
+const pmLayers = layers("protomaps", "light");
+// water color is too bright
+const pmWaterLayer = pmLayers.find(layer => layer.id == "water");
+if (pmWaterLayer != null) {
+	pmWaterLayer.paint["fill-color"] = "#aad3df";
+}
+
 export const MapStyleConfigs: { [key in MapStyle]: any } = {
+	Protomaps: {
+		version: 8,
+		glyphs: "https://cdn.protomaps.com/fonts/pbf/{fontstack}/{range}.pbf", // should self host this too
+		sources: {
+			protomaps: {
+				type: "vector",
+				// url: "pmtiles://https://build.protomaps.com/20231025.pmtiles",
+				tiles: [
+					"https://pmtiles.hotmilk.space/20231025/{z}/{x}/{y}.mvt",
+				],
+				maxzoom: 15,
+				attribution:
+					'<a href="https://protomaps.com">Protomaps</a> © <a href="https://openstreetmap.org">OpenStreetMap</a>',
+			},
+		},
+		layers: pmLayers,
+	},
 	OpenStreetMap: {
 		version: 8,
 		name: "OpenStreetMap Mapnik raster tiles (Default)",
