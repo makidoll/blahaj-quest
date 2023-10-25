@@ -4,12 +4,16 @@ Find blåhajar on a map
 
 https://blahaj.quest
 
-```
-yarn
-yarn start
-```
+## Develop
 
 ```
-yarn build
-yarn serve
+pnpm install
+pnpm start
+```
+
+## Build and run
+
+```
+pnpm build
+pnpm serve
 ```

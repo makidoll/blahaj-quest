@@ -1,13 +1,13 @@
 FROM rockylinux:9
 
-RUN dnf install -y nodejs && npm i -g yarn
+RUN dnf install -y nodejs && npm i -g pnpm
 
 WORKDIR /app
 
-ADD package.json yarn.lock /app/
-RUN yarn install
+ADD package.json pnpm-lock.yaml /app/
+RUN pnpm install --frozen-lockfile
 
 ADD . .
-RUN yarn build
+RUN pnpm build
 
-CMD yarn serve
+CMD pnpm serve
