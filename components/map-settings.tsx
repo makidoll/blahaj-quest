@@ -7,7 +7,7 @@ import {
 	Text,
 	VStack,
 } from "@chakra-ui/react";
-import { MapStyle, useMapSettings } from "../stores/map-settings";
+import { MapStyle, useMapSettings } from "../settings/map-settings";
 
 export default function MapSettings() {
 	const settings = useMapSettings();

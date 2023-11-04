@@ -3,7 +3,7 @@ import { Map, NavigationControl, Popup } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { useCallback, useEffect, useRef } from "react";
 import { BlahajData } from "../lib/get-blahaj";
-import { MapStyleConfigs, useMapSettings } from "../stores/map-settings";
+import { MapStyleConfigs, useMapSettings } from "../settings/map-settings";
 import styles from "./blahaj-map.module.css";
 
 const mapLoadImage = (map: Map, url: string): Promise<HTMLImageElement> =>
@@ -70,7 +70,17 @@ export default function BlahajMap(props: {
 						property: "weight",
 						type: "identity",
 					},
-					"heatmap-radius": 60,
+					// "heatmap-radius": 60,
+					"heatmap-radius": [
+						"interpolate",
+						["linear"],
+						["zoom"],
+						0,
+						20,
+						100,
+						1000,
+					],
+					"heatmap-opacity": 0.5,
 				},
 			});
 

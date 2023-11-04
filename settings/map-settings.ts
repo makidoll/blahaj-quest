@@ -21,7 +21,7 @@ export const useMapSettings = create<MapSettings>()(
 	set => ({
 		style: MapStyle.OpenStreetMap,
 		blahajLayer: true,
-		heatmapLayer: false,
+		heatmapLayer: true,
 		setStyle: (style: MapStyle) => set({ style }),
 		setBlahajLayer: (blahajLayer: boolean) => set({ blahajLayer }),
 		setHeatmapLayer: (heatmapLayer: boolean) => set({ heatmapLayer }),
