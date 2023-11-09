@@ -147,7 +147,7 @@ export default function Home(
 					colorScheme={"gray"}
 					color={"black"}
 					outline={"solid 2px rgba(255,255,255,0.5)"}
-					href="https://ko-fi.com/makidoll"
+					href="https://github.com/makidoll/blahaj-quest"
 					overflow={"hidden"}
 				>
 					Star
