@@ -13,14 +13,14 @@ import {
 import axios from "axios";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { FaCode } from "react-icons/fa6";
+import BlahajMap from "../components/BlahajMap";
 import { GitHubIcon } from "../components/GitHubIcon";
 import { KofiIcon } from "../components/KofiIcon";
-import BlahajMap from "../components/blahaj-map";
-import MapSettings from "../components/map-settings";
+import MapSettings from "../components/MapSettings";
 import blahajImage from "../images/full-flipped.png";
 import transHeart from "../images/trans-heart.png";
 import { BlahajData, getBlahajData } from "../lib/get-blahaj";
-import { apiCache } from "../utils/router-cache";
+import { apiCache } from "../utils/api-cache";
 
 async function getGitHubStars() {
 	return apiCache<number>(
