@@ -11,6 +11,7 @@ import "@fontsource/inter/900.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Script from "next/script";
+import { colorMix } from "../utils/utils";
 
 // TODO: flashes on load, maybe ssr related
 
@@ -23,26 +24,38 @@ const theme = extendTheme({
 	useSystemColorMode: false,
 	colors: {
 		// material design pink
-		brand: {
-			50: "#fce4ec",
-			100: "#f8bbd0",
-			200: "#f48fb1",
-			300: "#f06292",
-			400: "#ec407a",
-			500: "#e91e63",
-			600: "#d81b60",
-			700: "#c2185b",
-			800: "#ad1457",
-			900: "#880e4f",
-			// a100: "#ff80ab",
-			// a200: "#ff4081",
-			// a400: "#f50057",
-			// a700: "#c51162",
+		// brand: {
+		// 	50: "#fce4ec",
+		// 	100: "#f8bbd0",
+		// 	200: "#f48fb1",
+		// 	300: "#f06292",
+		// 	400: "#ec407a",
+		// 	500: "#e91e63",
+		// 	600: "#d81b60",
+		// 	700: "#c2185b",
+		// 	800: "#ad1457",
+		// 	900: "#880e4f",
+		// 	// a100: "#ff80ab",
+		// 	// a200: "#ff4081",
+		// 	// a400: "#f50057",
+		// 	// a700: "#c51162",
+		// },
+		// tomorrow: "#1d1f21",
+		// hexcorp: "#ff64ff",
+		// hexcorpDark: "#231929",
+		// justKindaDark: "#0f0f0f",
+		kofiBlue: {
+			50: "#13c3ff",
+			100: "#13c3ff",
+			200: "#13c3ff",
+			300: "#13c3ff",
+			400: "#13c3ff",
+			500: "#13c3ff",
+			600: colorMix("#13c3ff", "#111", 0.05),
+			700: colorMix("#13c3ff", "#111", 0.1),
+			800: colorMix("#13c3ff", "#111", 0.15),
+			900: colorMix("#13c3ff", "#111", 0.25),
 		},
-		tomorrow: "#1d1f21",
-		hexcorp: "#ff64ff",
-		hexcorpDark: "#231929",
-		justKindaDark: "#0f0f0f",
 	},
 	components: {
 		Heading: {

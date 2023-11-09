@@ -1,5 +1,6 @@
 import {
 	Box,
+	Button,
 	HStack,
 	Heading,
 	Icon,
@@ -9,20 +10,48 @@ import {
 	VStack,
 	useBreakpointValue,
 } from "@chakra-ui/react";
-import { GetServerSideProps } from "next";
-import GitHubButton from "react-github-btn";
-import { FaArrowRight, FaCode } from "react-icons/fa6";
+import axios from "axios";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import { FaCode } from "react-icons/fa6";
+import { GitHubIcon } from "../components/GitHubIcon";
+import { KofiIcon } from "../components/KofiIcon";
 import BlahajMap from "../components/blahaj-map";
 import MapSettings from "../components/map-settings";
 import blahajImage from "../images/full-flipped.png";
 import transHeart from "../images/trans-heart.png";
 import { BlahajData, getBlahajData } from "../lib/get-blahaj";
+import { apiCache } from "../utils/router-cache";
+
+async function getGitHubStars() {
+	return apiCache<number>(
+		"github-stars",
+		async () => {
+			console.log("fetching");
+			return (
+				await axios(
+					"https://api.github.com/repos/makidoll/blahaj-quest",
+				)
+			).data.stargazers_count;
+		},
+		1000 * 60, // 1 minute
+	);
+}
 
 export const getServerSideProps = (async context => {
-	return { props: { blahajData: await getBlahajData() } };
-}) satisfies GetServerSideProps<{ blahajData: BlahajData }>;
+	return {
+		props: {
+			blahajData: await getBlahajData(),
+			gitHubStars: await getGitHubStars(),
+		},
+	};
+}) satisfies GetServerSideProps<{
+	blahajData: BlahajData;
+	gitHubStars: number;
+}>;
 
-export default function Home(props: { blahajData: BlahajData }) {
+export default function Home(
+	props: InferGetServerSidePropsType<typeof getServerSideProps>,
+) {
 	const breakpoint = useBreakpointValue([0, 1, 2, 3]);
 
 	const Logo = (
@@ -73,41 +102,81 @@ export default function Home(props: { blahajData: BlahajData }) {
 	);
 
 	const Credits = (
-		<>
-			<VStack spacing={0}>
-				<Text>
-					Made by <b>Maki</b>
-				</Text>
-				<HStack spacing={1.5} mt={-1}>
-					<Text>with lots of</Text>
-					<Image src={transHeart.src} h={6} />
+		<HStack mt={-1.5} mr={4} spacing={4}>
+			<VStack spacing={1.5}>
+				<HStack spacing={1}>
+					<Text fontSize={"sm"}>
+						Made by{" "}
+						<Link href="https://makidoll.io" color={"white"}>
+							Maki
+						</Link>
+					</Text>
+					<Image src={transHeart.src} h={5} />
 				</HStack>
+				<Button
+					as={"a"}
+					size={"xs"}
+					leftIcon={<KofiIcon />}
+					colorScheme={"kofiBlue"}
+					color={"white"}
+					outline={"solid 2px rgba(255,255,255,0.5)"}
+					href="https://ko-fi.com/makidoll"
+				>
+					Support me
+				</Button>
 			</VStack>
-			<VStack ml={1} mr={4} spacing={0}>
-				<Box mt={1}>
-					<GitHubButton
-						href="https://github.com/makidrone/blahaj-quest"
-						data-size="large"
-						data-show-count="true"
-						aria-label="Star makidrone/blahaj-quest on GitHub"
-					>
-						Star
-					</GitHubButton>
-				</Box>
+			<VStack spacing={1.5}>
 				<Link
-					href="https://github.com/makidrone/blahaj-quest"
-					mt={-1.5}
+					href="https://github.com/makidoll/blahaj-quest"
+					// mt={-1.5}
 					display={"flex"}
 					flexDir={"row"}
 					alignItems={"center"}
 					justifyContent={"center"}
 					fontWeight={500}
+					fontSize={"sm"}
+					color={"white"}
 				>
 					<Icon as={FaCode} mr={1.5} />
 					See code
 				</Link>
+				<Button
+					as={"a"}
+					size={"xs"}
+					leftIcon={<GitHubIcon />}
+					colorScheme={"gray"}
+					color={"black"}
+					outline={"solid 2px rgba(255,255,255,0.5)"}
+					href="https://ko-fi.com/makidoll"
+					overflow={"hidden"}
+				>
+					Star
+					<Box
+						background={"white"}
+						h={"100%"}
+						mr={"-8px"}
+						ml={"8px"}
+						px={"8px"}
+						display={"flex"}
+						alignItems={"center"}
+						justifyContent={"center"}
+						borderLeft={"solid 1px var(--chakra-colors-gray-300)"}
+					>
+						{props.gitHubStars}
+					</Box>
+				</Button>
+				{/* <Box mt={1}>
+					<GitHubButton
+						href="https://github.com/makidoll/blahaj-quest"
+						data-size="large"
+						data-show-count="true"
+						aria-label="Star makidoll/blahaj-quest on GitHub"
+					>
+						Star
+					</GitHubButton>
+				</Box> */}
 			</VStack>
-		</>
+		</HStack>
 	);
 
 	let InnerHeader = <></>;
