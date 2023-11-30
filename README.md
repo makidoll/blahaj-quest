@@ -1,6 +1,8 @@
 # Blåhaj Quest
 
-Find blåhajar on a map
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q0MLBI)
+
+Find all the Blåhaj!
 
 https://blahaj.quest
 
