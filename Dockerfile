@@ -1,6 +1,6 @@
-FROM rockylinux:9
+FROM alpine:latest
 
-RUN dnf install -y nodejs && npm i -g pnpm
+RUN apk add --no-cache nodejs npm && npm i -g pnpm
 
 WORKDIR /app
 
