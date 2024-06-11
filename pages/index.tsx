@@ -23,17 +23,23 @@ import { BlahajData, getBlahajData } from "../lib/get-blahaj";
 import { apiCache } from "../utils/api-cache";
 
 async function getGitHubStars() {
-	return apiCache<number>(
+	return apiCache<string>(
 		"github-stars",
 		async () => {
 			console.log("fetching");
-			return (
-				await axios(
-					"https://api.github.com/repos/makidoll/blahaj-quest",
-				)
-			).data.stargazers_count;
+			try {
+				return String(
+					(
+						await axios(
+							"https://api.github.com/repos/makidoll/blahaj-quest",
+						)
+					).data.stargazers_count,
+				);
+			} catch (error) {
+				return "?";
+			}
 		},
-		1000 * 60, // 1 minute
+		1000 * 60 * 60, // 1 hour
 	);
 }
 
@@ -46,7 +52,7 @@ export const getServerSideProps = (async context => {
 	};
 }) satisfies GetServerSideProps<{
 	blahajData: BlahajData;
-	gitHubStars: number;
+	gitHubStars: string;
 }>;
 
 export default function Home(
