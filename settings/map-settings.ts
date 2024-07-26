@@ -4,7 +4,7 @@ import { create } from "zustand";
 export enum MapStyle {
 	// Protomaps = "Protomaps",
 	OpenStreetMap = "OpenStreetMap",
-	StamenWatercolor = "StamenWatercolor",
+	// StamenWatercolor = "StamenWatercolor",
 }
 
 interface MapSettings {
