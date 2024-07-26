@@ -14,7 +14,7 @@ export default function MapSettings() {
 
 	return (
 		<>
-			<Box
+			{/* <Box
 				bg={"white"}
 				p={"0px 12px"}
 				boxShadow={"lg"}
@@ -28,10 +28,10 @@ export default function MapSettings() {
 					onChange={e => settings.setStyle(e as MapStyle)}
 				>
 					<HStack spacing={3}>
-						{/* <Radio value={MapStyle.Protomaps}>
+						<Radio value={MapStyle.Protomaps}>
 							<Text fontSize={14}>Self-hosted Protomaps</Text>
 						</Radio>
-						<Box borderX={"solid 1px rgba(0,0,0,0.1)"} h="32px" /> */}
+						<Box borderX={"solid 1px rgba(0,0,0,0.1)"} h="32px" />
 						<Radio value={MapStyle.OpenStreetMap}>
 							<Text fontSize={14}>OpenStreetMap</Text>
 						</Radio>
@@ -41,7 +41,7 @@ export default function MapSettings() {
 						</Radio>
 					</HStack>
 				</RadioGroup>
-			</Box>
+			</Box> */}
 			<VStack
 				display={"inline-flex"}
 				bg={"white"}
