@@ -110,7 +110,7 @@ export default function Home(
 	const Credits = (
 		<HStack mt={-1.5} mr={4} spacing={4}>
 			<VStack spacing={1.5}>
-				<HStack spacing={1}>
+				{/* <HStack spacing={1}>
 					<Text fontSize={"sm"}>
 						Made by{" "}
 						<Link href="https://makidoll.io" color={"white"}>
@@ -129,7 +129,7 @@ export default function Home(
 					href="https://ko-fi.com/makidoll"
 				>
 					Support me
-				</Button>
+				</Button> */}
 			</VStack>
 			<VStack spacing={1.5}>
 				<Link
