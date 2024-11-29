@@ -51,20 +51,21 @@ export default function MapSettings() {
 				color={"black"}
 				alignItems={"start"}
 				spacing={0}
+				fontWeight={500}
 			>
 				<Checkbox
 					defaultChecked={settings.blahajLayer}
 					isChecked={settings.blahajLayer}
 					onChange={e => settings.setBlahajLayer(e.target.checked)}
 				>
-					<Text fontSize={14}>Blåhaj</Text>
+					<Text fontSize={14}>blåhaj</Text>
 				</Checkbox>
 				<Checkbox
 					defaultChecked={settings.heatmapLayer}
 					isChecked={settings.heatmapLayer}
 					onChange={e => settings.setHeatmapLayer(e.target.checked)}
 				>
-					<Text fontSize={14}>Heatmap</Text>
+					<Text fontSize={14}>heatmap</Text>
 				</Checkbox>
 			</VStack>
 		</>

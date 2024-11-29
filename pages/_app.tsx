@@ -1,17 +1,10 @@
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
-import "@fontsource/inter/100.css";
-import "@fontsource/inter/200.css";
-import "@fontsource/inter/300.css";
-import "@fontsource/inter/400.css";
-import "@fontsource/inter/500.css";
-import "@fontsource/inter/600.css";
-import "@fontsource/inter/700.css";
-import "@fontsource/inter/800.css";
-import "@fontsource/inter/900.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Script from "next/script";
+import { snPro } from "../fonts/fonts";
 import { colorMix } from "../utils/utils";
+import "./global.css";
 
 // TODO: flashes on load, maybe ssr related
 
@@ -83,8 +76,8 @@ const theme = extendTheme({
 		},
 	},
 	fonts: {
-		heading: `"Inter", sans-serif`,
-		body: `"Inter", sans-serif`,
+		heading: `${snPro.style.fontFamily}, sans-serif`,
+		body: `${snPro.style.fontFamily}, sans-serif`,
 	},
 });
 

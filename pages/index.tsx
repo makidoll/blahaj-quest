@@ -67,9 +67,14 @@ export default function Home(
 				mt={"-32px"}
 				ml={"-96px"}
 			></Image>
-			<VStack spacing={0}>
-				<Heading fontSize={24} lineHeight={1.2}>
-					Blåhaj Quest
+			<VStack spacing={0.5}>
+				<Heading
+					fontSize={24}
+					lineHeight={0.8}
+					fontWeight={800}
+					mt={1.5}
+				>
+					blåhaj quest
 				</Heading>
 				<Link href="https://blahaj.quest">https://blahaj.quest</Link>
 			</VStack>
@@ -77,25 +82,24 @@ export default function Home(
 	);
 
 	const Stats = (
-		<VStack spacing={0} ml={4} alignItems={"start"}>
+		<VStack spacing={0} ml={4} alignItems={"start"} mt={0}>
 			<HStack spacing={4}>
-				<Text>
+				<Text fontWeight={500}>
 					<b>
 						{props.blahajData.data.length.toLocaleString("en-US")}{" "}
 						stores
-					</b>{" "}
-				</Text>
-				<Text>
+					</b>
+					{" with "}
 					<b>
 						{props.blahajData.data
 							.reduce((a, b) => a + b.quantity, 0)
 							.toLocaleString("en-US")}{" "}
 						blåhaj
-					</b>{" "}
+					</b>
 				</Text>
 			</HStack>
-			<Text color={"whiteAlpha.700"} mt={-1}>
-				Last updated:{" "}
+			<Text mt={-1} fontWeight={500}>
+				last updated:{" "}
 				<b>
 					{new Date(props.blahajData.updated).toLocaleString([], {
 						hour: "2-digit",
@@ -130,7 +134,7 @@ export default function Home(
 					Support me
 				</Button> */}
 			</VStack>
-			<VStack spacing={1.5}>
+			<VStack spacing={1}>
 				<Link
 					href="https://github.com/makidoll/blahaj-quest"
 					// mt={-1.5}
@@ -138,12 +142,12 @@ export default function Home(
 					flexDir={"row"}
 					alignItems={"center"}
 					justifyContent={"center"}
-					fontWeight={500}
+					fontWeight={600}
 					fontSize={"sm"}
 					color={"white"}
 				>
 					<Icon as={FaCode} mr={1.5} />
-					See code
+					see code
 				</Link>
 				<Button
 					as={"a"}

@@ -1,0 +1,7 @@
+.maplibregl-map {
+	font-family: inherit !important;
+}
+
+.maplibregl-ctrl.maplibregl-ctrl-attrib {
+	color: #000 !important;
+}
