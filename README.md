@@ -1,6 +1,6 @@
 # Blåhaj Quest
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Q5Q0MLBI)
+> ⚠️ Need to rewrite eventually, it's a bit of a mess. Thinking about using SvelteKit with Tailwind
 
 Find all the Blåhaj!
 
