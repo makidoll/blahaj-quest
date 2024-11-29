@@ -49,9 +49,17 @@ export default function BlahajMap(props: {
 								Math.floor(Math.random() * markerIconsSize)
 							],
 							weight: store.quantity / 32,
-							description: `${store.name}: <b>${
-								store.quantity
-							} blåhaj${store.quantity == 1 ? "" : "ar"}</b>`,
+							description: `
+${store.name}
+</br>
+<b>${store.quantity} blåhaj${store.quantity == 1 ? "" : "ar"}</b>
+</br>
+<a href="https://www.ikea.com/${store.countryCode}/${
+								store.languageCode
+							}/search/?q=blahaj">
+See more →
+</a>
+							`.trim(),
 						},
 						geometry: {
 							type: "Point",
@@ -160,13 +168,17 @@ export default function BlahajMap(props: {
 
 			try {
 				const container = popup._container;
+
 				const content = container.querySelector(
 					".maplibregl-popup-content",
 				);
+
 				content.className += " " + styles["blahaj-popup-content"];
+
 				const closeButton = content.querySelector(
 					".maplibregl-popup-close-button",
 				);
+
 				closeButton.className +=
 					" " + styles["blahaj-popup-close-button"];
 			} catch (error) {

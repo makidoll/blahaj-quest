@@ -9,6 +9,11 @@
 	box-shadow: var(--chakra-shadows-lg);
 }
 
+.blahaj-popup-content a {
+	color: #3c8ea7;
+	font-weight: bold;
+}
+
 .blahaj-popup-close-button {
 	display: none;
 }

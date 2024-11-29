@@ -26,7 +26,6 @@ async function getGitHubStars() {
 	return apiCache<string>(
 		"github-stars",
 		async () => {
-			console.log("fetching");
 			try {
 				return String(
 					(

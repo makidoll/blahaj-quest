@@ -12,6 +12,9 @@ export interface BlahajStore {
 	name: string;
 	lat: string;
 	lng: string;
+	countryCode: string;
+	languageCode: string;
+	itemCode: string;
 }
 
 export interface BlahajData {
@@ -52,7 +55,8 @@ async function getStock(country: BlahajDbCountry): Promise<BlahajStore[]> {
 			headers: {
 				Accept: "application/json;version=2",
 				Referer: "https://www.ikea.com/",
-				"X-Client-Id": "b6c117e5-ae61-4ef5-b4cc-e0b1e37f0631",
+				// "X-Client-Id": "b6c117e5-ae61-4ef5-b4cc-e0b1e37f0631",
+				"X-Client-Id": "ef382663-a2a5-40d4-8afe-f0634821c0ed",
 			},
 			params: {
 				itemNos: itemCode,
@@ -76,12 +80,15 @@ async function getStock(country: BlahajDbCountry): Promise<BlahajStore[]> {
 					name: store.name,
 					lat: store.lat,
 					lng: store.lng,
+					countryCode,
+					languageCode,
+					itemCode,
 				} as BlahajStore;
 			})
 			.filter(store => store != null) as BlahajStore[];
 	} catch (error) {
 		console.error(countryCode + "-" + languageCode + " failed");
-		// console.error(error);
+		console.error(error);
 		return [];
 	}
 }
