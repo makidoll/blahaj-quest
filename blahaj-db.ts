@@ -31,7 +31,8 @@ export const BLAHAJ_DB: { [continent: string]: BlahajDbCountry[] } = {
 		["it", "it", "30373588"], // italy
 		["es", "es", "30373588"], // spain
 		["pl", "pl", "30373588"], // poland
-		["ua", "uk", "30373588"], // ukraine
+		// should add a custom closed store but for now its closed
+		// ["ua", "uk", "30373588"], // ukraine
 		["ro", "ro", "30373588"], // romania
 		["nl", "nl", "30373588"], // netherlands
 		["be", "nl", "30373588"], // belgium
