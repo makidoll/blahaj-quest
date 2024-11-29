@@ -51,9 +51,9 @@ export default function BlahajMap(props: {
 							weight: store.quantity / 32,
 							description: `
 ${store.name}
-</br>
+<br />
 <b>${store.quantity} blåhaj${store.quantity == 1 ? "" : "ar"}</b>
-</br>
+<br />
 <a href="https://www.ikea.com/${store.countryCode}/${
 								store.languageCode
 							}/search/?q=blahaj">
